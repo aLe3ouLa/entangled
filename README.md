@@ -34,6 +34,23 @@ Animated series (The Apothecary Diaries) don't need any setup — they're
 routed through AniList instead (see below), which is a public API with no
 key required.
 
+## Adding a series
+
+```
+npm run generate-series -- "Show Title" <seasonCount> [--top N] [--slug custom-slug]
+```
+
+Writes `src/data/series/<slug>.ts` with real data for everything that's
+actually fetchable — the character roster, per-season `prominence` (from
+TMDb's real per-season billing order, not guessed), and `seasonSynopses`
+(from TMDb's season overviews) — and clear `// TODO` placeholders for
+everything that isn't: `house`, `bio`, `aliveUntil` (death timing), and
+every `relationship`. Nothing about who trusts whom, or how much, exists
+in any API — that part stays hand-authored the same way the GoT data was.
+`--top` caps the roster at the N most-billed characters (default 15).
+Live-action only (uses TMDb's per-season endpoints); wire the result into
+`src/data/series/index.ts` once you've filled in the placeholders.
+
 ## How it started
 
 This began as three structurally different UI prototypes (continuous
