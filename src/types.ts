@@ -7,6 +7,8 @@ export interface Character {
   bio: string;
   /** last season the character is alive/active; seasonCount if they survive throughout */
   aliveUntil: number;
+  /** first season the character appears; defaults to 1 if omitted */
+  firstSeason?: number;
   /** how much the story is "about" them that season (screen time + being talked about), one per season, 0-100 */
   prominence: number[];
   /** override if this character's in-show name differs from how TMDb credits them */
@@ -29,12 +31,15 @@ export type RelationshipType =
   | 'responsibility'
   | 'loyalty'
   | 'threat'
-  | 'hidden-truth';
+  | 'hidden-truth'
+  /** no personal charge yet either way — professional, hierarchical, or purely circumstantial */
+  | 'neutral';
 
 export interface Relationship {
   id: string;
   source: string;
   target: string;
+  /** the bond's type when it doesn't change category across seasons; ignored if `types` is set */
   type: RelationshipType;
   /** short name for the bond, e.g. "Brothers turned enemies" */
   label: string;
@@ -42,6 +47,9 @@ export interface Relationship {
   summary: string;
   /** one frame per season, index 0 = season 1 */
   seasons: RelationshipFrame[];
+  /** only needed when the bond's category itself changes across seasons (e.g. master/servant
+   *  becoming lovers) — one per season, same length as `seasons`, overrides `type` when present */
+  types?: RelationshipType[];
 }
 
 /** genealogy is static — no seasons, no scores, just who's related to whom */
@@ -61,7 +69,9 @@ export type FamilyLinkKind =
   | 'parent'
   | 'adoptive'
   /** true parentage the story treats as a secret/reveal — rendered dashed */
-  | 'secret-parent';
+  | 'secret-parent'
+  /** known extended-family tie that isn't direct parentage (uncle, sibling, etc.) */
+  | 'extended';
 
 export interface FamilyLink {
   from: string;

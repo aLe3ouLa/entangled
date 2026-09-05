@@ -5,9 +5,9 @@ import { ZoomControls } from './components/ZoomControls';
 import { useForceGraph } from './lib/forceLayout';
 import { edgeColor, edgeDash, edgeDistance, edgeOpacity, edgeWidth, nodeRadius } from './lib/encode';
 import { usePanZoom } from './lib/usePanZoom';
-import { RELATIONSHIP_SIMPLE_LABEL, RELATIONSHIP_TYPE_COLOR, RELATIONSHIP_TYPE_LABEL } from './lib/relationshipType';
+import { RELATIONSHIP_TYPE_COLOR, RELATIONSHIP_TYPE_LABEL } from './lib/relationshipType';
 import { theme } from './lib/theme';
-import { frameAt, isAlive, valueAt } from './lib/timeline';
+import { frameAt, hasAppeared, isAlive, typeAt, valueAt } from './lib/timeline';
 import { useSeriesCast } from './lib/useSeriesCast';
 import { useWindowSize } from './lib/useWindowSize';
 import type { Character, Relationship, Series } from './types';
@@ -46,6 +46,12 @@ export function RelationshipMap({ series }: { series: Series }) {
   }, [relationships, frames]);
 
   const positions = useForceGraph(nodeIds, linkDefs, distances, size);
+
+  const presentIds = useMemo(() => {
+    const ids = new Set<string>();
+    for (const c of characters) if (hasAppeared(c.firstSeason, t)) ids.add(c.id);
+    return ids;
+  }, [characters, t]);
 
   const relatedIds = useMemo(() => {
     if (!selected) return null;
@@ -86,10 +92,12 @@ export function RelationshipMap({ series }: { series: Series }) {
         </defs>
         <g transform={`translate(${transform.x},${transform.y}) scale(${transform.k})`}>
         {relationships.map((r) => {
+          if (!presentIds.has(r.source) || !presentIds.has(r.target)) return null;
           const a = positions[r.source];
           const b = positions[r.target];
           if (!a || !b) return null;
           const frame = frames[r.id];
+          const currentType = typeAt(r, t);
           const isSelected = selectedRel === r.id;
           const touchesSelected = !relatedIds || r.source === selected || r.target === selected;
           const labelOpacity = (isSelected ? 1 : 0.85) * (touchesSelected ? 1 : 0.12);
@@ -100,7 +108,7 @@ export function RelationshipMap({ series }: { series: Series }) {
                 y1={a.y}
                 x2={b.x}
                 y2={b.y}
-                stroke={edgeColor(r.type)}
+                stroke={edgeColor(currentType)}
                 strokeWidth={isSelected ? edgeWidth(frame) + 2.5 : edgeWidth(frame)}
                 strokeOpacity={(isSelected ? 1 : edgeOpacity(frame)) * (touchesSelected ? 1 : 0.12)}
                 strokeDasharray={edgeDash(frame)}
@@ -117,7 +125,7 @@ export function RelationshipMap({ series }: { series: Series }) {
                 fontFamily={theme.fontUI}
                 fontWeight={600}
                 letterSpacing={0.4}
-                fill={edgeColor(r.type)}
+                fill={edgeColor(currentType)}
                 stroke={theme.bg}
                 strokeWidth={3}
                 paintOrder="stroke"
@@ -125,12 +133,13 @@ export function RelationshipMap({ series }: { series: Series }) {
                 onClick={() => openRelationship(r.id)}
                 style={{ cursor: 'pointer', textTransform: 'uppercase', transition: 'opacity 0.2s ease' }}
               >
-                {RELATIONSHIP_SIMPLE_LABEL[r.type]}
+                {RELATIONSHIP_TYPE_LABEL[currentType]}
               </text>
             </g>
           );
         })}
         {characters.map((c) => {
+          if (!presentIds.has(c.id)) return null;
           const p = positions[c.id];
           if (!p) return null;
           const alive = isAlive(c.aliveUntil, t);
@@ -220,6 +229,7 @@ export function RelationshipMap({ series }: { series: Series }) {
         <RelationshipPanel
           rel={relDetail}
           frame={frames[relDetail.id]}
+          type={typeAt(relDetail, t)}
           characters={characters}
           photos={photos}
           onBack={selected ? () => setSelectedRel(null) : undefined}
@@ -321,7 +331,7 @@ export function RelationshipMap({ series }: { series: Series }) {
                   }}
                 >
                   <div style={{ fontFamily: theme.fontDisplay, fontSize: 16, marginBottom: 4 }}>{other.name}</div>
-                  <TypeTag type={r.type} label={r.label} />
+                  <TypeTag type={typeAt(r, t)} label={r.label} />
                   <MiniBar label="trust" value={frame.trust} />
                   <MiniBar label="affection" value={frame.affection} />
                   <MiniBar label="power" value={frame.power} />
@@ -412,6 +422,7 @@ function TypeTag({ type, label }: { type: Relationship['type']; label: string })
 function RelationshipPanel({
   rel,
   frame,
+  type,
   characters,
   photos,
   onBack,
@@ -419,6 +430,7 @@ function RelationshipPanel({
 }: {
   rel: Relationship;
   frame: ReturnType<typeof frameAt>;
+  type: Relationship['type'];
   characters: Character[];
   photos: Record<string, string | null>;
   onBack?: () => void;
@@ -466,8 +478,8 @@ function RelationshipPanel({
       </div>
       <h2 style={{ margin: '0 0 8px', fontFamily: theme.fontDisplay, fontWeight: 600, fontSize: 22 }}>{rel.label}</h2>
       <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, color: theme.textMuted, marginBottom: 10 }}>
-        <span style={{ width: 9, height: 9, borderRadius: '50%', background: RELATIONSHIP_TYPE_COLOR[rel.type] }} />
-        {RELATIONSHIP_TYPE_LABEL[rel.type]}
+        <span style={{ width: 9, height: 9, borderRadius: '50%', background: RELATIONSHIP_TYPE_COLOR[type] }} />
+        {RELATIONSHIP_TYPE_LABEL[type]}
       </div>
       <p style={{ fontSize: 13, lineHeight: 1.6, color: theme.text, opacity: 0.9, marginBottom: 20 }}>{rel.summary}</p>
       <MiniBar label="trust" value={frame.trust} />

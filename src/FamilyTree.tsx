@@ -25,6 +25,7 @@ function personCharacter(p: FamilyPerson, characters: Character[]): Character {
 function lineStyle(kind: FamilyLinkKind): { stroke: string; dash?: string } {
   if (kind === 'secret-parent') return { stroke: RELATIONSHIP_TYPE_COLOR['hidden-truth'], dash: '5 4' };
   if (kind === 'adoptive') return { stroke: 'rgba(243,236,223,0.4)', dash: '5 4' };
+  if (kind === 'extended') return { stroke: theme.accentSoft };
   return { stroke: 'rgba(243,236,223,0.4)' };
 }
 
@@ -149,7 +150,8 @@ export function FamilyTreeView({ series }: { series: Series }) {
           {series.title}
         </h1>
         <div style={{ color: theme.textMuted, fontFamily: theme.fontUI, fontSize: 12, marginTop: 6 }}>
-          Solid = biological parent · dashed gray = raised by (not biological) · dashed{' '}
+          Solid = biological parent · dashed gray = raised by (not biological) · solid gold ={' '}
+          extended family (uncle, sibling, etc.) · dashed{' '}
           <span style={{ color: RELATIONSHIP_TYPE_COLOR['hidden-truth'] }}>gold-violet</span> = true parentage kept secret in-story.
         </div>
       </div>
