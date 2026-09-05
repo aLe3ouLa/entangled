@@ -25,3 +25,19 @@ export const RELATIONSHIP_TYPE_LABEL: Record<RelationshipType, string> = {
 };
 
 export const RELATIONSHIP_TYPES = Object.keys(RELATIONSHIP_TYPE_COLOR) as RelationshipType[];
+
+/** a coarser, at-a-glance grouping shown as a small label on each edge —
+ *  9 types is too much to hold in your head while reading the graph */
+export type SimpleBond = 'friends' | 'lovers' | 'family' | 'enemies';
+
+export const RELATIONSHIP_SIMPLE_LABEL: Record<RelationshipType, SimpleBond> = {
+  family: 'family',
+  responsibility: 'family',
+  'hidden-truth': 'family',
+  erotic: 'lovers',
+  loyalty: 'friends',
+  dependence: 'friends',
+  conflict: 'enemies',
+  betrayal: 'enemies',
+  threat: 'enemies',
+};

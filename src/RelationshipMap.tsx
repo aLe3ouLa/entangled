@@ -5,7 +5,7 @@ import { ZoomControls } from './components/ZoomControls';
 import { useForceGraph } from './lib/forceLayout';
 import { edgeColor, edgeDash, edgeDistance, edgeOpacity, edgeWidth, nodeRadius } from './lib/encode';
 import { usePanZoom } from './lib/usePanZoom';
-import { RELATIONSHIP_TYPE_COLOR, RELATIONSHIP_TYPE_LABEL } from './lib/relationshipType';
+import { RELATIONSHIP_SIMPLE_LABEL, RELATIONSHIP_TYPE_COLOR, RELATIONSHIP_TYPE_LABEL } from './lib/relationshipType';
 import { theme } from './lib/theme';
 import { frameAt, isAlive, valueAt } from './lib/timeline';
 import { useSeriesCast } from './lib/useSeriesCast';
@@ -92,22 +92,42 @@ export function RelationshipMap({ series }: { series: Series }) {
           const frame = frames[r.id];
           const isSelected = selectedRel === r.id;
           const touchesSelected = !relatedIds || r.source === selected || r.target === selected;
+          const labelOpacity = (isSelected ? 1 : 0.85) * (touchesSelected ? 1 : 0.12);
           return (
-            <line
-              key={r.id}
-              x1={a.x}
-              y1={a.y}
-              x2={b.x}
-              y2={b.y}
-              stroke={edgeColor(r.type)}
-              strokeWidth={isSelected ? edgeWidth(frame) + 2.5 : edgeWidth(frame)}
-              strokeOpacity={(isSelected ? 1 : edgeOpacity(frame)) * (touchesSelected ? 1 : 0.12)}
-              strokeDasharray={edgeDash(frame)}
-              strokeLinecap="round"
-              filter={isSelected ? 'url(#edge-glow)' : undefined}
-              onClick={() => openRelationship(r.id)}
-              style={{ cursor: 'pointer', transition: 'stroke-width 0.15s ease, stroke-opacity 0.2s ease' }}
-            />
+            <g key={r.id}>
+              <line
+                x1={a.x}
+                y1={a.y}
+                x2={b.x}
+                y2={b.y}
+                stroke={edgeColor(r.type)}
+                strokeWidth={isSelected ? edgeWidth(frame) + 2.5 : edgeWidth(frame)}
+                strokeOpacity={(isSelected ? 1 : edgeOpacity(frame)) * (touchesSelected ? 1 : 0.12)}
+                strokeDasharray={edgeDash(frame)}
+                strokeLinecap="round"
+                filter={isSelected ? 'url(#edge-glow)' : undefined}
+                onClick={() => openRelationship(r.id)}
+                style={{ cursor: 'pointer', transition: 'stroke-width 0.15s ease, stroke-opacity 0.2s ease' }}
+              />
+              <text
+                x={(a.x + b.x) / 2}
+                y={(a.y + b.y) / 2 - 5}
+                textAnchor="middle"
+                fontSize={9}
+                fontFamily={theme.fontUI}
+                fontWeight={600}
+                letterSpacing={0.4}
+                fill={edgeColor(r.type)}
+                stroke={theme.bg}
+                strokeWidth={3}
+                paintOrder="stroke"
+                opacity={labelOpacity}
+                onClick={() => openRelationship(r.id)}
+                style={{ cursor: 'pointer', textTransform: 'uppercase', transition: 'opacity 0.2s ease' }}
+              >
+                {RELATIONSHIP_SIMPLE_LABEL[r.type]}
+              </text>
+            </g>
           );
         })}
         {characters.map((c) => {
