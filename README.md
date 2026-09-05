@@ -9,18 +9,17 @@
 <br />
 
 <h1>
-  <span style="letter-spacing: 0.08em;">E</span>·<span style="letter-spacing: 0.08em;">N</span>·<span style="letter-spacing: 0.08em;">T</span>·<span style="letter-spacing: 0.08em;">A</span>·<span style="letter-spacing: 0.08em;">N</span>·<span style="letter-spacing: 0.08em;">G</span>·<span style="letter-spacing: 0.08em;">L</span>·<span style="letter-spacing: 0.08em;">E</span>·<span style="letter-spacing: 0.08em;">D</span>
+  ENTANGLED
   <br />
   <sub><sup>a season scrubber for any cast</sup></sub>
 </h1>
 
 <p>
-  <em>Watch a show's relationships breathe, season by season.</em>
+  <em>Watch a show's relationships evolve, season by season.</em>
 </p>
 
 <p>
-  Drag one slider and a whole-cast force graph morphs smoothly instead of<br />
-  jumping between states — trust, affection, power and tension, all evolving live.
+  Drag one slider and a whole-cast force graph morphs smoothly
 </p>
 
 <br />
@@ -54,15 +53,13 @@
 
 ## ✦ Why this exists
 
-Most "character relationship" pages are wikis with arrows — flat, static, and true for exactly one moment in the story.
-
 **A relationship isn't flat.** A master-and-servant arrangement becomes a romance. A frosty rival becomes an ally. A "brother" turns out to be a secret son. Entangled treats a season of television as a **timeline**, not a snapshot:
 
 - Every character has a per-season **prominence** (how much that season is "about" them) and, when they're not in the story yet, a `firstSeason` they're introduced in.
 - Every relationship carries per-season **trust / affection / power / tension** scores, and — when the bond itself changes category, not just intensity — a per-season sequence of **types** too.
 - One continuous scrubber drives all of it. Nodes grow and shrink, edges recolor, lines dash in and out, and the whole cast's force layout reheats smoothly instead of snapping between five fixed poses.
 
-Directly inspired by [tension-map](https://github.com/yanliudesign/tension-map), generalized from one story to **any TV series, season by season** — with real cast photos instead of a hand-authored dataset per show.
+Inspired by [tension-map](https://github.com/yanliudesign/tension-map), generalized from one story to **any TV series, season by season** — with real cast photos instead of a hand-authored dataset per show.
 
 ---
 
@@ -73,13 +70,13 @@ Directly inspired by [tension-map](https://github.com/yanliudesign/tension-map),
 <td width="50%" valign="top">
 
 #### 🌐 Force-directed cast graph
-`d3-force` physics. Click any node for a full character panel, any edge for the relationship's story — label, summary, and live trust/affection/power/tension bars.
+`d3-force` physics. Click any node for a full character panel, any edge for the relationship's story with label, summary, and live trust/affection/power/tension bars.
 
 </td>
 <td width="50%" valign="top">
 
 #### 🎚 Continuous season scrubber
-Not five discrete tabs — a slider from season 1 to the finale. Scores interpolate in between; category-level changes (a relationship's `type`) snap at the nearest season instead.
+A slider from season 1 to the finale. Scores interpolate in between; category-level changes (a relationship's `type`) snap at the nearest season instead.
 
 </td>
 </tr>
@@ -87,7 +84,7 @@ Not five discrete tabs — a slider from season 1 to the finale. Scores interpol
 <td width="50%" valign="top">
 
 #### 🌳 Static family tree view
-A second, un-scrubbed view for genealogy: parent / adoptive / secret-parent / extended links, rendered as centered generation rows with dashed lines for the secrets the characters themselves don't know yet.
+A second, unscrubbed view for genealogy: parent / adoptive / secret-parent / extended links, rendered as centered generation rows with dashed lines for the secrets the characters themselves don't know yet.
 
 </td>
 <td width="50%" valign="top">
