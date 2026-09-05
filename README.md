@@ -47,6 +47,8 @@
   <em>The Apothecary Diaries · 19 characters · 34 relationships · 2 seasons</em>
   <br />
   <em>Charmed · 12 characters · 14 relationships · 8 seasons</em>
+  <br />
+  <em>Friends · 9 characters · 18 relationships · 10 seasons</em>
 </p>
 
 ---
@@ -98,7 +100,7 @@ TMDb aggregate credits for live-action shows; AniList's official character art f
 <td width="50%" valign="top">
 
 #### 🔀 Multi-series picker
-Switch shows from a bottom-left pill picker and views (relationships / family tree) from a bottom-right one — both encoded in the URL, so any state is a shareable link.
+Switch shows from a bottom-left hamburger menu and views (relationships / family tree) from a bottom-right pill picker — both encoded in the URL, so any state is a shareable link.
 
 </td>
 <td width="50%" valign="top">
@@ -146,14 +148,14 @@ To get real photos for **live-action** shows (TMDb):
 ```mermaid
 flowchart LR
   A["Series data<br/>characters + relationships"] --> B["timeline.ts<br/>interpolate (continuous)<br/>or snap (categorical)"]
-  B --> C["RelationshipMap.tsx<br/>d3-force graph"]
+  B --> C["features/RelationshipMap<br/>d3-force graph"]
   A --> D["FamilyTree.tsx<br/>static genealogy"]
   E["TMDb (live-action)<br/>AniList (anime)"] --> F["resolveArt.ts + castMatch.ts"]
   F --> C
   F --> D
 ```
 
-The data layer is plain TypeScript modules — one file per series, nothing shared at runtime. The render layer is React + D3 + inline styles, no CSS framework. No backend, no database: everything runs client-side off whichever series file is currently selected.
+The data layer is plain TypeScript modules — one file per series, nothing shared at runtime. The render layer is React + D3, styled with a mix of CSS Modules and inline styles — no CSS framework. No backend, no database: everything runs client-side off whichever series file is currently selected.
 
 ---
 
@@ -161,7 +163,7 @@ The data layer is plain TypeScript modules — one file per series, nothing shar
 
 See [`src/types.ts`](src/types.ts) and [`src/data/series/`](src/data/series/).
 
-- **Series** (`got.ts`, `apothecaryDiaries.ts`, `charmed.ts`, registered in `index.ts`) bundles a show's `seasonCount` with its own characters and relationships — nothing about cast size or season count is hardcoded outside the series' own file. `searchTitle` is a search query, not a hardcoded numeric id, so adding a series never requires looking one up.
+- **Series** (`got.ts`, `apothecaryDiaries.ts`, `charmed.ts`, `friends.ts`, registered in `index.ts`) bundles a show's `seasonCount` with its own characters and relationships — nothing about cast size or season count is hardcoded outside the series' own file. `searchTitle` is a search query, not a hardcoded numeric id, so adding a series never requires looking one up.
 - **Characters** have a house/color, a `firstSeason` (when they're introduced — omit if present from the start) and `aliveUntil` (their last season), and a per-season `prominence` array that drives node size.
 - **Relationships** carry a `type` (color-coded — see `src/lib/relationshipType.ts`), a `label` + `summary` explaining the bond in plain language, and a per-season `RelationshipFrame` of trust/affection/power/tension scores (0–100):
 
@@ -222,35 +224,51 @@ This is a client-side prototype, so the TMDb key ships in the browser bundle (`V
 
 ```
 src/
-├── App.tsx                    # Series picker, view toggle, URL state
-├── main.tsx                   # React entry
-├── RelationshipMap.tsx        # d3-force graph + season scrubber + detail panels
-├── FamilyTree.tsx             # Static genealogy view
-├── types.ts                   # Character / Relationship / FamilyTree shapes
-├── index.css                  # Global styles (no CSS framework)
+├── App.tsx                        # Series picker, view toggle, URL state
+├── App.module.css
+├── main.tsx                       # React entry
+├── FamilyTree.tsx                 # Static genealogy view
+├── types.ts                       # Character / Relationship / FamilyTree shapes
+├── index.css                      # Global styles + CSS custom properties (no CSS framework)
 ├── components/
-│   ├── CharacterAvatar.tsx    # Photo, DiceBear fallback, selection ring
-│   ├── Pill.tsx                # Bottom-corner picker/toggle button
-│   ├── TypeLegend.tsx         # Relationship-type color key
-│   └── ZoomControls.tsx       # Pan/zoom buttons
+│   ├── AvatarIcon.tsx
+│   ├── CharacterAvatar.tsx        # Photo, DiceBear fallback, selection ring
+│   ├── Pill.tsx                   # Bottom-right toggle button (view picker)
+│   ├── SeriesMenu/                # Bottom-left hamburger menu (series picker)
+│   └── ZoomControls.tsx           # Pan/zoom buttons
+├── features/
+│   └── RelationshipMap/
+│       ├── index.tsx              # d3-force graph + season scrubber
+│       ├── hooks/useRelationshipMapState.ts
+│       └── components/
+│           ├── Bar/               # trust/affection/power/tension bar
+│           ├── CharacterPanel/    # Character detail panel
+│           ├── Dot/                # Legend color dot
+│           ├── Legend/             # Collapsible bond-type legend
+│           ├── PanelCloseButton/
+│           ├── PulseRing/          # Selection/hover pulse animation
+│           ├── RelationshipPanel/  # Relationship detail panel
+│           └── TypeTag/            # Relationship-type color pill
 ├── lib/
-│   ├── timeline.ts            # Interpolate / snap a score, type, or presence to a season
-│   ├── encode.ts               # Score → visual encoding (width, opacity, dash, distance)
-│   ├── forceLayout.ts          # d3-force simulation wrapper
-│   ├── relationshipType.ts     # Type → color / label / simple-bond mappings
-│   ├── tmdb.ts / anilist.ts    # Cast-photo providers
-│   ├── castMatch.ts            # Name matching between our data and a provider's credits
-│   ├── resolveArt.ts           # Picks a provider per series, caches results
+│   ├── timeline.ts                # Interpolate / snap a score, type, or presence to a season
+│   ├── encode.ts                   # Score → visual encoding (width, opacity, dash, distance)
+│   ├── forceLayout.ts              # d3-force simulation wrapper
+│   ├── relationshipType.ts         # Type → color / label / simple-bond mappings
+│   ├── theme.ts                    # Shared color/font tokens
+│   ├── avatar.ts                   # DiceBear placeholder-avatar URLs
+│   ├── tmdb.ts / anilist.ts        # Cast-photo providers
+│   ├── castMatch.ts                # Name matching between our data and a provider's credits
+│   ├── resolveArt.ts               # Picks a provider per series, caches results
 │   └── usePanZoom.ts / useWindowSize.ts / useSeriesCast.ts / useFamilyPhotos.ts
 └── data/
-    ├── series/
-    │   ├── got.ts               # Game of Thrones
-    │   ├── apothecaryDiaries.ts # The Apothecary Diaries
-    │   ├── charmed.ts           # Charmed
-    │   └── index.ts             # SERIES registry
-    └── ...
+    └── series/
+        ├── got.ts                  # Game of Thrones
+        ├── apothecaryDiaries.ts    # The Apothecary Diaries
+        ├── charmed.ts              # Charmed
+        ├── friends.ts              # Friends
+        └── index.ts                # SERIES registry
 scripts/
-└── generate-series.mjs         # TMDb scaffolding CLI (see "Adding a series")
+└── generate-series.mjs             # TMDb scaffolding CLI (see "Adding a series")
 ```
 
 </details>
@@ -295,9 +313,8 @@ This began as three structurally different UI prototypes — a continuous scrubb
 <td valign="top">
 
 **Visual language**
-- Display · *Cormorant Garamond*
-- Body · *Inter*
-- Palette · Gold `#c9a35a` × Ink `#0b0908`
+- Display & body · *Nunito*
+- Palette · Navy `#0a0c16` × Bubblegum `#ff6fae`
 - Lint · oxlint
 
 </td>
@@ -308,10 +325,10 @@ This began as three structurally different UI prototypes — a continuous scrubb
 
 ## ✦ Credits
 
-Inspired by [tension-map](https://github.com/yanliudesign/tension-map) by [@yanliudesign](https://github.com/yanliudesign) — this project keeps its gold-and-ink visual language and its core idea (relationships as scored, evolving edges) and generalizes the rest: any series instead of one hand-authored story, real cast photos instead of illustrated placeholders, and a continuous per-season timeline instead of five fixed narrative stages.
+Inspired by [tension-map](https://github.com/yanliudesign/tension-map) by [@yanliudesign](https://github.com/yanliudesign) — this project keeps its core idea (relationships as scored, evolving edges) and generalizes the rest: any series instead of one hand-authored story, real cast photos instead of illustrated placeholders, and a continuous per-season timeline instead of five fixed narrative stages.
 
 <div align="center"><br />
 
-<sub>ink · gold · garamond</sub>
+<sub>navy · bubblegum · nunito</sub>
 
 </div>
