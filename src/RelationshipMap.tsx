@@ -1,8 +1,10 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { CharacterAvatar } from './components/CharacterAvatar';
 import { TypeLegend } from './components/TypeLegend';
+import { ZoomControls } from './components/ZoomControls';
 import { useForceGraph } from './lib/forceLayout';
 import { edgeColor, edgeDash, edgeDistance, edgeOpacity, edgeWidth, nodeRadius } from './lib/encode';
+import { usePanZoom } from './lib/usePanZoom';
 import { RELATIONSHIP_TYPE_COLOR, RELATIONSHIP_TYPE_LABEL } from './lib/relationshipType';
 import { theme } from './lib/theme';
 import { frameAt, isAlive, valueAt } from './lib/timeline';
@@ -22,6 +24,8 @@ export function RelationshipMap({ series }: { series: Series }) {
   const [hovered, setHovered] = useState<string | null>(null);
   const [selectedRel, setSelectedRel] = useState<string | null>(null);
   const { photos, loading: photosLoading } = useSeriesCast(series);
+  const svgRef = useRef<SVGSVGElement | null>(null);
+  const { transform, zoomIn, zoomOut, reset: resetZoom } = usePanZoom(svgRef);
 
   const nodeIds = useMemo(() => characters.map((c) => c.id), [characters]);
   const linkDefs = useMemo(
@@ -60,7 +64,7 @@ export function RelationshipMap({ series }: { series: Series }) {
 
   return (
     <div style={{ position: 'fixed', inset: 0, background: theme.bg, overflow: 'hidden' }}>
-      <svg width={size.width} height={size.height}>
+      <svg ref={svgRef} width={size.width} height={size.height} style={{ cursor: 'grab' }}>
         <defs>
           <filter id="edge-glow" x="-75%" y="-75%" width="250%" height="250%">
             <feGaussianBlur stdDeviation="4" result="blur" />
@@ -70,6 +74,7 @@ export function RelationshipMap({ series }: { series: Series }) {
             </feMerge>
           </filter>
         </defs>
+        <g transform={`translate(${transform.x},${transform.y}) scale(${transform.k})`}>
         {relationships.map((r) => {
           const a = positions[r.source];
           const b = positions[r.target];
@@ -127,7 +132,10 @@ export function RelationshipMap({ series }: { series: Series }) {
             </g>
           );
         })}
+        </g>
       </svg>
+
+      <ZoomControls onZoomIn={zoomIn} onZoomOut={zoomOut} onReset={resetZoom} />
 
       <div style={{ position: 'fixed', top: 20, left: 24, maxWidth: 340 }}>
         <h1
