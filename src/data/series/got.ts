@@ -1,4 +1,4 @@
-import type { Character, Relationship, RelationshipFrame } from '../types';
+import type { Character, Relationship, RelationshipFrame, Series } from '../../types';
 
 function f(trust: number, affection: number, power: number, tension: number): RelationshipFrame {
   return { trust, affection, power, tension };
@@ -10,7 +10,7 @@ function s8(frames: [number, number, number, number][]): RelationshipFrame[] {
   return frames.map(([t, a, p, x]) => f(t, a, p, x));
 }
 
-export const characters: Character[] = [
+const characters: Character[] = [
   { id: 'ned', name: 'Ned Stark', house: 'Stark', color: '#7c93a8', aliveUntil: 1, prominence: [95, 35, 20, 15, 10, 8, 6, 5] },
   { id: 'catelyn', name: 'Catelyn Stark', house: 'Stark', color: '#7c93a8', aliveUntil: 3, prominence: [80, 75, 55, 10, 8, 6, 5, 4] },
   { id: 'robb', name: 'Robb Stark', house: 'Stark', color: '#7c93a8', aliveUntil: 3, prominence: [50, 85, 80, 10, 8, 6, 5, 4] },
@@ -25,7 +25,7 @@ export const characters: Character[] = [
   { id: 'petyr', name: 'Petyr Baelish', house: 'none', color: '#a1662f', aliveUntil: 7, prominence: [50, 55, 60, 65, 60, 70, 75, 0] },
 ];
 
-export const relationships: Relationship[] = [
+const relationships: Relationship[] = [
   {
     id: 'ned-catelyn',
     source: 'ned',
@@ -267,3 +267,12 @@ export const relationships: Relationship[] = [
     ]),
   },
 ];
+
+export const got: Series = {
+  id: 'got',
+  title: 'Game of Thrones',
+  tmdbTitle: 'Game of Thrones',
+  seasonCount: 8,
+  characters,
+  relationships,
+};

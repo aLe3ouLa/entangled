@@ -1,37 +1,43 @@
 import { useMemo, useState } from 'react';
-import { characters, relationships } from './data/got';
 import { CharacterAvatar } from './components/CharacterAvatar';
 import { TypeLegend } from './components/TypeLegend';
 import { useForceGraph } from './lib/forceLayout';
 import { edgeColor, edgeDistance, edgeOpacity, edgeWidth, nodeRadius } from './lib/encode';
 import { RELATIONSHIP_TYPE_COLOR, RELATIONSHIP_TYPE_LABEL } from './lib/relationshipType';
-import { frameAt, isAlive, SEASON_COUNT, valueAt } from './lib/timeline';
+import { frameAt, isAlive, valueAt } from './lib/timeline';
+import { useSeriesCast } from './lib/useSeriesCast';
 import { useWindowSize } from './lib/useWindowSize';
-
-const nodeIds = characters.map((c) => c.id);
-const linkDefs = relationships.map((r) => ({ id: r.id, source: r.source, target: r.target }));
+import type { Character, Relationship, Series } from './types';
 
 /**
  * One big force graph with a bottom scrubber you drag continuously across
- * all 8 seasons — edges morph smoothly instead of jumping between states.
+ * a series' seasons — edges morph smoothly instead of jumping between states.
  */
-export function RelationshipMap() {
+export function RelationshipMap({ series }: { series: Series }) {
+  const { characters, relationships, seasonCount } = series;
   const size = useWindowSize();
   const [t, setT] = useState(1);
   const [selected, setSelected] = useState<string | null>(null);
   const [selectedRel, setSelectedRel] = useState<string | null>(null);
+  const { photos, loading: photosLoading } = useSeriesCast(series);
+
+  const nodeIds = useMemo(() => characters.map((c) => c.id), [characters]);
+  const linkDefs = useMemo(
+    () => relationships.map((r) => ({ id: r.id, source: r.source, target: r.target })),
+    [relationships],
+  );
 
   const frames = useMemo(() => {
     const map: Record<string, ReturnType<typeof frameAt>> = {};
     for (const r of relationships) map[r.id] = frameAt(r.seasons, t);
     return map;
-  }, [t]);
+  }, [relationships, t]);
 
   const distances = useMemo(() => {
     const map: Record<string, number> = {};
     for (const r of relationships) map[r.id] = edgeDistance(frames[r.id]);
     return map;
-  }, [frames]);
+  }, [relationships, frames]);
 
   const positions = useForceGraph(nodeIds, linkDefs, distances, size);
 
@@ -87,7 +93,7 @@ export function RelationshipMap() {
               style={{ cursor: 'pointer' }}
               opacity={alive ? 1 : 0.25}
             >
-              <CharacterAvatar character={c} radius={radius} highlight={selected === c.id} />
+              <CharacterAvatar character={c} radius={radius} highlight={selected === c.id} photoUrl={photos[c.id]} />
               <text
                 y={radius + 14}
                 textAnchor="middle"
@@ -116,6 +122,7 @@ export function RelationshipMap() {
         Drag the scrubber below. Click a character or a line for details.
         <br />
         Node size = how much the season is about them. Line width = tension.
+        {photosLoading && <div style={{ marginTop: 4, opacity: 0.6 }}>Loading cast photos…</div>}
       </div>
 
       <TypeLegend />
@@ -124,6 +131,8 @@ export function RelationshipMap() {
         <RelationshipPanel
           rel={relDetail}
           frame={frames[relDetail.id]}
+          characters={characters}
+          photos={photos}
           onBack={selected ? () => setSelectedRel(null) : undefined}
           onClose={() => {
             setSelectedRel(null);
@@ -156,7 +165,7 @@ export function RelationshipMap() {
             <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
               <svg width={48} height={48}>
                 <g transform="translate(24,24)">
-                  <CharacterAvatar character={selectedChar} radius={24} />
+                  <CharacterAvatar character={selectedChar} radius={24} photoUrl={photos[selectedChar.id]} />
                 </g>
               </svg>
               <div>
@@ -213,14 +222,14 @@ export function RelationshipMap() {
         <input
           type="range"
           min={1}
-          max={SEASON_COUNT}
+          max={seasonCount}
           step={0.02}
           value={t}
           onChange={(e) => setT(Number(e.target.value))}
           style={{ width: '100%' }}
         />
         <div style={{ display: 'flex', justifyContent: 'space-between', opacity: 0.5, marginTop: 2 }}>
-          {Array.from({ length: SEASON_COUNT }, (_, i) => (
+          {Array.from({ length: seasonCount }, (_, i) => (
             <span key={i}>S{i + 1}</span>
           ))}
         </div>
@@ -229,7 +238,7 @@ export function RelationshipMap() {
   );
 }
 
-function TypeTag({ type, label }: { type: (typeof relationships)[number]['type']; label: string }) {
+function TypeTag({ type, label }: { type: Relationship['type']; label: string }) {
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, opacity: 0.7, marginBottom: 6 }}>
       <span style={{ width: 8, height: 8, borderRadius: '50%', background: RELATIONSHIP_TYPE_COLOR[type], flexShrink: 0 }} />
@@ -243,11 +252,15 @@ function TypeTag({ type, label }: { type: (typeof relationships)[number]['type']
 function RelationshipPanel({
   rel,
   frame,
+  characters,
+  photos,
   onBack,
   onClose,
 }: {
-  rel: (typeof relationships)[number];
+  rel: Relationship;
   frame: ReturnType<typeof frameAt>;
+  characters: Character[];
+  photos: Record<string, string | null>;
   onBack?: () => void;
   onClose: () => void;
 }) {
@@ -278,13 +291,13 @@ function RelationshipPanel({
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
         <svg width={40} height={40}>
           <g transform="translate(20,20)">
-            <CharacterAvatar character={source} radius={20} />
+            <CharacterAvatar character={source} radius={20} photoUrl={photos[source.id]} />
           </g>
         </svg>
         <span style={{ opacity: 0.4 }}>—</span>
         <svg width={40} height={40}>
           <g transform="translate(20,20)">
-            <CharacterAvatar character={target} radius={20} />
+            <CharacterAvatar character={target} radius={20} photoUrl={photos[target.id]} />
           </g>
         </svg>
       </div>

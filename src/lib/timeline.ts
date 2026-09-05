@@ -1,7 +1,5 @@
 import type { RelationshipFrame } from '../types';
 
-export { SEASON_COUNT } from '../types';
-
 function lerp(a: number, b: number, t: number) {
   return a + (b - a) * t;
 }
