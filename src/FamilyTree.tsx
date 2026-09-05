@@ -30,6 +30,32 @@ interface LineSpec {
   dash?: string;
 }
 
+function PersonNode({
+  person,
+  characters,
+  photoUrl,
+  nodeRef,
+}: {
+  person: FamilyPerson;
+  characters: Character[];
+  photoUrl: string | null | undefined;
+  nodeRef: (el: HTMLDivElement | null) => void;
+}) {
+  const character = personCharacter(person, characters);
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: 96 }}>
+      <div ref={nodeRef} style={{ width: AVATAR_SIZE, height: AVATAR_SIZE }}>
+        <svg width={AVATAR_SIZE} height={AVATAR_SIZE}>
+          <g transform={`translate(${AVATAR_SIZE / 2},${AVATAR_SIZE / 2})`}>
+            <CharacterAvatar character={character} radius={AVATAR_SIZE / 2 - 2} photoUrl={photoUrl} />
+          </g>
+        </svg>
+      </div>
+      <div style={{ fontSize: 12, color: '#e5e7eb', marginTop: 6, textAlign: 'center' }}>{person.name}</div>
+    </div>
+  );
+}
+
 /** Static genealogy view — no seasons, no scores, just who's related to whom. */
 export function FamilyTreeView({ series }: { series: Series }) {
   const tree = series.familyTree;
@@ -88,7 +114,19 @@ export function FamilyTreeView({ series }: { series: Series }) {
     );
   }
 
-  const generations = [...new Set(tree.people.map((p) => p.generation))].sort((a, b) => a - b);
+  const connectedIds = new Set<string>();
+  for (const l of tree.links) {
+    connectedIds.add(l.from);
+    connectedIds.add(l.to);
+  }
+  for (const s of tree.spouses) {
+    connectedIds.add(s.a);
+    connectedIds.add(s.b);
+  }
+  const connectedPeople = tree.people.filter((p) => connectedIds.has(p.id));
+  const isolatedPeople = tree.people.filter((p) => !connectedIds.has(p.id));
+
+  const generations = [...new Set(connectedPeople.map((p) => p.generation))].sort((a, b) => a - b);
   const notes = tree.links.filter((l) => l.note);
 
   return (
@@ -118,25 +156,40 @@ export function FamilyTreeView({ series }: { series: Series }) {
             key={gen}
             style={{ display: 'flex', justifyContent: 'center', gap: 40, marginBottom: 90, position: 'relative', zIndex: 1 }}
           >
-            {tree.people
+            {connectedPeople
               .filter((p) => p.generation === gen)
-              .map((p) => {
-                const character = personCharacter(p, series.characters);
-                return (
-                  <div key={p.id} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: 96 }}>
-                    <div ref={(el) => { nodeRefs.current[p.id] = el; }} style={{ width: AVATAR_SIZE, height: AVATAR_SIZE }}>
-                      <svg width={AVATAR_SIZE} height={AVATAR_SIZE}>
-                        <g transform={`translate(${AVATAR_SIZE / 2},${AVATAR_SIZE / 2})`}>
-                          <CharacterAvatar character={character} radius={AVATAR_SIZE / 2 - 2} photoUrl={photos[p.id]} />
-                        </g>
-                      </svg>
-                    </div>
-                    <div style={{ fontSize: 12, color: '#e5e7eb', marginTop: 6, textAlign: 'center' }}>{p.name}</div>
-                  </div>
-                );
-              })}
+              .map((p) => (
+                <PersonNode
+                  key={p.id}
+                  person={p}
+                  characters={series.characters}
+                  photoUrl={photos[p.id]}
+                  nodeRef={(el) => {
+                    nodeRefs.current[p.id] = el;
+                  }}
+                />
+              ))}
           </div>
         ))}
+
+        {isolatedPeople.length > 0 && (
+          <>
+            <div style={{ color: '#6b7280', fontFamily: 'system-ui, sans-serif', fontSize: 11, textTransform: 'uppercase', marginBottom: 14 }}>
+              No tracked family ties in this dataset
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'center', gap: 40, marginBottom: 20 }}>
+              {isolatedPeople.map((p) => (
+                <PersonNode
+                  key={p.id}
+                  person={p}
+                  characters={series.characters}
+                  photoUrl={photos[p.id]}
+                  nodeRef={() => {}}
+                />
+              ))}
+            </div>
+          </>
+        )}
 
         {notes.length > 0 && (
           <div style={{ marginTop: 20, color: '#9ca3af', fontFamily: 'system-ui, sans-serif', fontSize: 12, lineHeight: 1.7 }}>

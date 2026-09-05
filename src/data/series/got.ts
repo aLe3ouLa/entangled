@@ -270,25 +270,54 @@ const relationships: Relationship[] = [
 
 const familyTree: FamilyTree = {
   people: [
-    // generation 0 — parents' generation, plus anyone with no tracked family
-    { id: 'ned', name: 'Ned Stark', generation: 0 },
-    { id: 'catelyn', name: 'Catelyn Stark', generation: 0 },
-    { id: 'lyanna-stark', name: 'Lyanna Stark', generation: 0, color: '#7c93a8' },
-    { id: 'rhaegar-targaryen', name: 'Rhaegar Targaryen', generation: 0, color: '#8e44ad' },
+    // generation 0 — grandparents' generation, none of these are tracked Characters
+    { id: 'rickard-stark', name: 'Rickard Stark', generation: 0, color: '#7c93a8' },
+    { id: 'aerys-targaryen', name: 'Aerys II Targaryen', generation: 0, color: '#8e44ad' },
     { id: 'tywin-lannister', name: 'Tywin Lannister', generation: 0, color: '#c0392b' },
-    { id: 'daenerys', name: 'Daenerys Targaryen', generation: 0 },
-    { id: 'theon', name: 'Theon Greyjoy', generation: 0 },
-    { id: 'petyr', name: 'Petyr Baelish', generation: 0 },
-    // generation 1
-    { id: 'robb', name: 'Robb Stark', generation: 1 },
-    { id: 'sansa', name: 'Sansa Stark', generation: 1 },
-    { id: 'arya', name: 'Arya Stark', generation: 1 },
-    { id: 'jon', name: 'Jon Snow', generation: 1 },
+    { id: 'joanna-lannister', name: 'Joanna Lannister', generation: 0, color: '#c0392b' },
+    { id: 'balon-greyjoy', name: 'Balon Greyjoy', generation: 0, color: '#16697a' },
+
+    // generation 1 — parents' generation
+    { id: 'ned', name: 'Ned Stark', generation: 1 },
+    { id: 'catelyn', name: 'Catelyn Stark', generation: 1 },
+    { id: 'lyanna-stark', name: 'Lyanna Stark', generation: 1, color: '#7c93a8' },
+    { id: 'rhaegar-targaryen', name: 'Rhaegar Targaryen', generation: 1, color: '#8e44ad' },
+    { id: 'viserys-targaryen', name: 'Viserys Targaryen', generation: 1, color: '#8e44ad' },
+    { id: 'daenerys', name: 'Daenerys Targaryen', generation: 1 },
     { id: 'cersei', name: 'Cersei Lannister', generation: 1 },
     { id: 'jaime', name: 'Jaime Lannister', generation: 1 },
     { id: 'tyrion', name: 'Tyrion Lannister', generation: 1 },
+    { id: 'robert-baratheon', name: 'Robert Baratheon', generation: 1, color: '#b45309' },
+    { id: 'theon', name: 'Theon Greyjoy', generation: 1 },
+    { id: 'yara-greyjoy', name: 'Yara Greyjoy', generation: 1, color: '#16697a' },
+
+    // generation 2 — children's generation
+    { id: 'robb', name: 'Robb Stark', generation: 2 },
+    { id: 'sansa', name: 'Sansa Stark', generation: 2 },
+    { id: 'arya', name: 'Arya Stark', generation: 2 },
+    { id: 'jon', name: 'Jon Snow', generation: 2 },
+    { id: 'joffrey-baratheon', name: 'Joffrey Baratheon', generation: 2, color: '#c0392b' },
+    { id: 'myrcella-baratheon', name: 'Myrcella Baratheon', generation: 2, color: '#c0392b' },
+    { id: 'tommen-baratheon', name: 'Tommen Baratheon', generation: 2, color: '#c0392b' },
+
+    // no tracked family ties
+    { id: 'petyr', name: 'Petyr Baelish', generation: 1 },
   ],
   links: [
+    { from: 'rickard-stark', to: 'ned', kind: 'parent' },
+    { from: 'rickard-stark', to: 'lyanna-stark', kind: 'parent' },
+    { from: 'aerys-targaryen', to: 'rhaegar-targaryen', kind: 'parent' },
+    { from: 'aerys-targaryen', to: 'viserys-targaryen', kind: 'parent' },
+    { from: 'aerys-targaryen', to: 'daenerys', kind: 'parent' },
+    { from: 'tywin-lannister', to: 'cersei', kind: 'parent' },
+    { from: 'tywin-lannister', to: 'jaime', kind: 'parent' },
+    { from: 'tywin-lannister', to: 'tyrion', kind: 'parent' },
+    { from: 'joanna-lannister', to: 'cersei', kind: 'parent' },
+    { from: 'joanna-lannister', to: 'jaime', kind: 'parent' },
+    { from: 'joanna-lannister', to: 'tyrion', kind: 'parent' },
+    { from: 'balon-greyjoy', to: 'theon', kind: 'parent' },
+    { from: 'balon-greyjoy', to: 'yara-greyjoy', kind: 'parent' },
+
     { from: 'ned', to: 'robb', kind: 'parent' },
     { from: 'catelyn', to: 'robb', kind: 'parent' },
     { from: 'ned', to: 'sansa', kind: 'parent' },
@@ -298,11 +327,19 @@ const familyTree: FamilyTree = {
     { from: 'ned', to: 'jon', kind: 'adoptive', note: "Raised as his son — the realm believes Jon is Ned's bastard" },
     { from: 'rhaegar-targaryen', to: 'jon', kind: 'secret-parent', note: 'Not publicly known' },
     { from: 'lyanna-stark', to: 'jon', kind: 'secret-parent', note: 'Not publicly known' },
-    { from: 'tywin-lannister', to: 'cersei', kind: 'parent' },
-    { from: 'tywin-lannister', to: 'jaime', kind: 'parent' },
-    { from: 'tywin-lannister', to: 'tyrion', kind: 'parent' },
+
+    { from: 'robert-baratheon', to: 'joffrey-baratheon', kind: 'parent', note: 'Robert believes they are his trueborn children' },
+    { from: 'robert-baratheon', to: 'myrcella-baratheon', kind: 'parent', note: 'Robert believes they are his trueborn children' },
+    { from: 'robert-baratheon', to: 'tommen-baratheon', kind: 'parent', note: 'Robert believes they are his trueborn children' },
+    { from: 'jaime', to: 'joffrey-baratheon', kind: 'secret-parent', note: 'Not publicly known' },
+    { from: 'jaime', to: 'myrcella-baratheon', kind: 'secret-parent', note: 'Not publicly known' },
+    { from: 'jaime', to: 'tommen-baratheon', kind: 'secret-parent', note: 'Not publicly known' },
   ],
-  spouses: [{ a: 'ned', b: 'catelyn' }],
+  spouses: [
+    { a: 'ned', b: 'catelyn' },
+    { a: 'tywin-lannister', b: 'joanna-lannister' },
+    { a: 'cersei', b: 'robert-baratheon' },
+  ],
 };
 
 export const got: Series = {
