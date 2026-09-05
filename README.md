@@ -21,9 +21,10 @@ Cast photos are optional. Without an API key, characters get an
 illustrated placeholder avatar (DiceBear, seeded per character) instead of
 a real photo — the app works either way. To get real cast photos:
 
-1. Get a free key at https://www.themoviedb.org/settings/api (sign up,
-   then Settings > API > request an API key, choose "Developer").
-2. `cp .env.local.example .env.local` and paste the key in.
+1. Get a free token at https://www.themoviedb.org/settings/api (sign up,
+   then Settings > API > request access, choose "Developer"). Use the
+   **API Read Access Token** (a long JWT) — not the shorter v3 API Key.
+2. `cp .env.local.example .env.local` and paste the token in.
 3. Restart `npm run dev`.
 
 ## How it started

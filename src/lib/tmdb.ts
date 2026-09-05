@@ -1,4 +1,5 @@
-const API_KEY = import.meta.env.VITE_TMDB_API_KEY as string | undefined;
+// v4 read access token (a JWT) — sent as a Bearer header, not a v3 api_key query param
+const ACCESS_TOKEN = import.meta.env.VITE_TMDB_ACCESS_TOKEN as string | undefined;
 const BASE = 'https://api.themoviedb.org/3';
 const IMAGE_BASE = 'https://image.tmdb.org/t/p';
 
@@ -9,7 +10,7 @@ export interface TmdbCastMember {
 }
 
 export function isConfigured(): boolean {
-  return Boolean(API_KEY);
+  return Boolean(ACCESS_TOKEN);
 }
 
 export function profileUrl(path: string | null | undefined, size: 'w185' | 'w342' = 'w185'): string | null {
@@ -18,9 +19,10 @@ export function profileUrl(path: string | null | undefined, size: 'w185' | 'w342
 
 async function tmdbFetch<T>(path: string, params: Record<string, string> = {}): Promise<T> {
   const url = new URL(`${BASE}${path}`);
-  url.searchParams.set('api_key', API_KEY ?? '');
   for (const [k, v] of Object.entries(params)) url.searchParams.set(k, v);
-  const res = await fetch(url.toString());
+  const res = await fetch(url.toString(), {
+    headers: { Authorization: `Bearer ${ACCESS_TOKEN}`, accept: 'application/json' },
+  });
   if (!res.ok) throw new Error(`TMDb request failed: ${res.status} ${path}`);
   return res.json() as Promise<T>;
 }

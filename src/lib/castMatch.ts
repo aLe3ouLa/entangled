@@ -11,15 +11,28 @@ function normalize(s: string): string {
     .trim();
 }
 
-/** exact match first, then whichever-contains-the-other as a fallback for nicknames/aliases */
+function tokens(s: string): string[] {
+  return normalize(s).split(' ').filter(Boolean);
+}
+
+/**
+ * exact match first; then token-subset match as a fallback, since TMDb often
+ * credits characters with an inline nickname ("Petyr 'Littlefinger' Baelish")
+ * that breaks plain substring containment but not a token check
+ */
 export function findProfilePath(cast: TmdbCastMember[], characterName: string): string | null {
   const target = normalize(characterName);
   const exact = cast.find((c) => normalize(c.characterName) === target);
   if (exact) return exact.profilePath;
 
-  const partial = cast.find((c) => {
-    const n = normalize(c.characterName);
-    return n.includes(target) || target.includes(n);
-  });
-  return partial?.profilePath ?? null;
+  const targetTokens = tokens(characterName);
+  let best: { member: TmdbCastMember; extra: number } | null = null;
+  for (const member of cast) {
+    const candidateTokens = tokens(member.characterName);
+    const isSuperset = targetTokens.every((t) => candidateTokens.includes(t));
+    if (!isSuperset) continue;
+    const extra = candidateTokens.length - targetTokens.length;
+    if (!best || extra < best.extra) best = { member, extra };
+  }
+  return best?.member.profilePath ?? null;
 }
