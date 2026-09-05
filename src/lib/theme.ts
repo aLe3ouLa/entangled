@@ -1,21 +1,21 @@
-/** Gold-and-ink palette — an editorial, "prestige drama" register instead of
+/** Navy-and-bubblegum palette — a playful, high-contrast register instead of
  *  generic dark-dashboard chrome. Referenced everywhere instead of scattering
  *  hex codes, so the look stays consistent across views. */
 export const theme = {
-  bg: '#0b0908',
-  bgVignette: 'radial-gradient(ellipse at 50% 0%, rgba(60,45,20,0.16), transparent 60%)',
-  panel: 'rgba(21,18,15,0.88)',
-  panelBorder: 'rgba(201,165,74,0.22)',
+  bg: '#0a0c16',
+  bgVignette: 'radial-gradient(ellipse at 50% 0%, rgba(255,111,174,0.16), transparent 60%)',
+  panel: 'rgba(15,17,28,0.88)',
+  panelBorder: 'rgba(255,111,174,0.25)',
   hairline: 'rgba(255,255,255,0.08)',
 
-  text: '#f3ecdf',
-  textMuted: 'rgba(243,236,223,0.6)',
-  textFaint: 'rgba(243,236,223,0.4)',
+  text: '#f2eef8',
+  textMuted: 'rgba(242,238,248,0.6)',
+  textFaint: 'rgba(242,238,248,0.4)',
 
-  accent: '#c9a35a',
-  accentSoft: 'rgba(201,163,90,0.35)',
-  accentDim: 'rgba(201,163,90,0.16)',
+  accent: '#ff6fae',
+  accentSoft: 'rgba(255,111,174,0.35)',
+  accentDim: 'rgba(255,111,174,0.16)',
 
-  fontDisplay: "'Cormorant Garamond', Georgia, serif",
-  fontUI: "'Inter', system-ui, sans-serif",
+  fontDisplay: "'Nunito', system-ui, sans-serif",
+  fontUI: "'Nunito', system-ui, sans-serif",
 } as const;

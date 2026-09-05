@@ -499,7 +499,7 @@ function MiniBar({ label, value }: { label: string; value: number }) {
           style={{
             width: `${value}%`,
             height: '100%',
-            background: `linear-gradient(90deg, ${theme.accent}, #e8c887)`,
+            background: `linear-gradient(90deg, ${theme.accent}, #ffb3d9)`,
             borderRadius: 2,
           }}
         />
