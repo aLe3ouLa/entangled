@@ -1,21 +1,21 @@
 import { useMemo, useState } from 'react';
-import { characters, relationships } from '../data/got';
-import { CharacterAvatar } from '../components/CharacterAvatar';
-import { TypeLegend } from '../components/TypeLegend';
-import { useForceGraph } from '../lib/forceLayout';
-import { edgeColor, edgeDistance, edgeOpacity, edgeWidth, nodeRadius } from '../lib/encode';
-import { RELATIONSHIP_TYPE_COLOR, RELATIONSHIP_TYPE_LABEL } from '../lib/relationshipType';
-import { frameAt, isAlive, SEASON_COUNT, valueAt } from '../lib/timeline';
-import { useWindowSize } from '../lib/useWindowSize';
+import { characters, relationships } from './data/got';
+import { CharacterAvatar } from './components/CharacterAvatar';
+import { TypeLegend } from './components/TypeLegend';
+import { useForceGraph } from './lib/forceLayout';
+import { edgeColor, edgeDistance, edgeOpacity, edgeWidth, nodeRadius } from './lib/encode';
+import { RELATIONSHIP_TYPE_COLOR, RELATIONSHIP_TYPE_LABEL } from './lib/relationshipType';
+import { frameAt, isAlive, SEASON_COUNT, valueAt } from './lib/timeline';
+import { useWindowSize } from './lib/useWindowSize';
 
 const nodeIds = characters.map((c) => c.id);
 const linkDefs = relationships.map((r) => ({ id: r.id, source: r.source, target: r.target }));
 
 /**
- * Variant A — the "classic" read: one big force graph, a bottom scrubber
- * you drag continuously across all 8 seasons, edges morph smoothly.
+ * One big force graph with a bottom scrubber you drag continuously across
+ * all 8 seasons — edges morph smoothly instead of jumping between states.
  */
-export function VariantA() {
+export function RelationshipMap() {
   const size = useWindowSize();
   const [t, setT] = useState(1);
   const [selected, setSelected] = useState<string | null>(null);
