@@ -47,6 +47,16 @@ export function RelationshipMap({ series }: { series: Series }) {
 
   const positions = useForceGraph(nodeIds, linkDefs, distances, size);
 
+  const relatedIds = useMemo(() => {
+    if (!selected) return null;
+    const ids = new Set<string>([selected]);
+    for (const r of relationships) {
+      if (r.source === selected) ids.add(r.target);
+      if (r.target === selected) ids.add(r.source);
+    }
+    return ids;
+  }, [selected, relationships]);
+
   const selectedChar = characters.find((c) => c.id === selected) ?? null;
   const selectedRels = selectedChar
     ? relationships.filter((r) => r.source === selectedChar.id || r.target === selectedChar.id)
@@ -81,6 +91,7 @@ export function RelationshipMap({ series }: { series: Series }) {
           if (!a || !b) return null;
           const frame = frames[r.id];
           const isSelected = selectedRel === r.id;
+          const touchesSelected = !relatedIds || r.source === selected || r.target === selected;
           return (
             <line
               key={r.id}
@@ -90,12 +101,12 @@ export function RelationshipMap({ series }: { series: Series }) {
               y2={b.y}
               stroke={edgeColor(r.type)}
               strokeWidth={isSelected ? edgeWidth(frame) + 2.5 : edgeWidth(frame)}
-              strokeOpacity={isSelected ? 1 : edgeOpacity(frame)}
+              strokeOpacity={(isSelected ? 1 : edgeOpacity(frame)) * (touchesSelected ? 1 : 0.12)}
               strokeDasharray={edgeDash(frame)}
               strokeLinecap="round"
               filter={isSelected ? 'url(#edge-glow)' : undefined}
               onClick={() => openRelationship(r.id)}
-              style={{ cursor: 'pointer', transition: 'stroke-width 0.15s ease' }}
+              style={{ cursor: 'pointer', transition: 'stroke-width 0.15s ease, stroke-opacity 0.2s ease' }}
             />
           );
         })}
@@ -105,6 +116,7 @@ export function RelationshipMap({ series }: { series: Series }) {
           const alive = isAlive(c.aliveUntil, t);
           const isSelected = selected === c.id;
           const isHovered = hovered === c.id;
+          const isRelated = !relatedIds || relatedIds.has(c.id);
           const radius = nodeRadius(valueAt(c.prominence, t)) + (isSelected ? 4 : 0);
           return (
             <g
@@ -113,8 +125,8 @@ export function RelationshipMap({ series }: { series: Series }) {
               onClick={() => openCharacter(c.id)}
               onMouseEnter={() => setHovered(c.id)}
               onMouseLeave={() => setHovered((h) => (h === c.id ? null : h))}
-              style={{ cursor: 'pointer' }}
-              opacity={alive ? 1 : 0.25}
+              style={{ cursor: 'pointer', transition: 'opacity 0.2s ease' }}
+              opacity={(alive ? 1 : 0.25) * (isRelated ? 1 : 0.18)}
             >
               {isSelected && <PulseRing radius={radius} amplitude={16} duration="1.6s" peakOpacity={0.6} />}
               {!isSelected && isHovered && <PulseRing radius={radius} amplitude={6} duration="1s" peakOpacity={0.35} />}

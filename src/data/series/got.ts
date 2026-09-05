@@ -202,6 +202,15 @@ const characters: Character[] = [
     aliveUntil: 8,
     prominence: [30, 35, 35, 40, 45, 30, 35, 40],
   },
+  {
+    id: "robert-baratheon",
+    name: "Robert Baratheon",
+    house: "Baratheon",
+    color: "#b45309",
+    bio: "King of the Seven Kingdoms by conquest, Ned's closest friend since childhood — a warrior gone to seed on the throne, more interested in wine and old glories than actually ruling.",
+    aliveUntil: 1,
+    prominence: [75, 15, 8, 5, 4, 3, 2, 2],
+  },
 ];
 
 const relationships: Relationship[] = [
@@ -944,6 +953,25 @@ const relationships: Relationship[] = [
       [0, 0, 0, 0],
       [30, 20, 40, 50],
       [10, 5, 30, 85],
+    ]),
+  },
+  {
+    id: "ned-robert-baratheon",
+    source: "ned",
+    target: "robert-baratheon",
+    type: "loyalty",
+    label: "Brothers in all but blood",
+    summary:
+      "Raised together as wards of Jon Arryn and bonded further in Robert's Rebellion — the friendship that makes Robert name him Hand of the King, undone by the secret Ned uncovers about Robert's own children.",
+    seasons: s8([
+      [90, 85, 60, 35],
+      [90, 85, 60, 35],
+      [90, 85, 60, 35],
+      [90, 85, 60, 35],
+      [90, 85, 60, 35],
+      [90, 85, 60, 35],
+      [90, 85, 60, 35],
+      [90, 85, 60, 35],
     ]),
   },
 ];
