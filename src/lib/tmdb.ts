@@ -7,6 +7,9 @@ export interface TmdbCastMember {
   characterName: string;
   actorName: string;
   profilePath: string | null;
+  /** TMDb's billing order — lower means more prominent. Used to prefer the
+   *  main actor over e.g. a "Young X" flashback recast sharing part of the name. */
+  order: number;
 }
 
 export function isConfigured(): boolean {
@@ -55,7 +58,7 @@ export async function getAggregateCast(tmdbTitle: string): Promise<TmdbCastMembe
   }
 
   const data = await tmdbFetch<{
-    cast: { name: string; profile_path: string | null; roles?: { character: string }[]; character?: string }[];
+    cast: { name: string; profile_path: string | null; roles?: { character: string }[]; character?: string; order: number }[];
   }>(`/tv/${seriesId}/aggregate_credits`);
 
   const cast: TmdbCastMember[] = data.cast.flatMap((member) => {
@@ -64,6 +67,7 @@ export async function getAggregateCast(tmdbTitle: string): Promise<TmdbCastMembe
       characterName,
       actorName: member.name,
       profilePath: member.profile_path,
+      order: member.order,
     }));
   });
 

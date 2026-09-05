@@ -7,6 +7,8 @@ const ENDPOINT = 'https://graphql.anilist.co';
 export interface AnilistCharacter {
   characterName: string;
   imageUrl: string | null;
+  /** array position — the query is sorted by role (MAIN before SUPPORTING), so lower is more prominent */
+  order: number;
 }
 
 const QUERY = `
@@ -51,7 +53,7 @@ export async function getAnilistCharacters(title: string): Promise<AnilistCharac
   const nodes = json.data?.Media?.characters?.nodes ?? [];
   const characters: AnilistCharacter[] = nodes
     .filter((n) => n.name?.full)
-    .map((n) => ({ characterName: n.name!.full!, imageUrl: n.image?.large ?? null }));
+    .map((n, i) => ({ characterName: n.name!.full!, imageUrl: n.image?.large ?? null, order: i }));
 
   cache.set(title, characters);
   return characters;
