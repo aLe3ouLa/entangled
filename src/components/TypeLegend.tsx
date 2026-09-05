@@ -49,6 +49,12 @@ export function TypeLegend({ style }: { style?: CSSProperties }) {
         </svg>
         <span style={{ color: theme.textMuted }}>Negative</span>
       </div>
+      <div style={{ color: theme.accent, fontSize: 10, textTransform: 'uppercase', letterSpacing: 0.6, margin: '8px 0 2px' }}>
+        Encoding
+      </div>
+      <div style={{ color: theme.textMuted }}>Node size — screen time</div>
+      <div style={{ color: theme.textMuted }}>Line width — tension</div>
+      <div style={{ color: theme.textFaint, marginTop: 6 }}>Click a character or line for details</div>
     </div>
   );
 }

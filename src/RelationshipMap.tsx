@@ -122,7 +122,7 @@ export function RelationshipMap({ series }: { series: Series }) {
         })}
       </svg>
 
-      <div style={{ position: 'fixed', top: 20, left: 24 }}>
+      <div style={{ position: 'fixed', top: 20, left: 24, maxWidth: 340 }}>
         <h1
           style={{
             margin: 0,
@@ -135,12 +135,36 @@ export function RelationshipMap({ series }: { series: Series }) {
         >
           {series.title}
         </h1>
-        <div style={{ color: theme.textMuted, fontFamily: theme.fontUI, fontSize: 12, marginTop: 4, maxWidth: 320 }}>
-          Drag the scrubber below. Click a character or a line for details.
-          <br />
-          Node size = how much the season is about them. Line width = tension.
-          {photosLoading && <div style={{ marginTop: 4, color: theme.textFaint }}>Loading cast photos…</div>}
+        <div
+          style={{
+            marginTop: 12,
+            background: theme.panel,
+            backdropFilter: 'blur(10px)',
+            border: `1px solid ${theme.panelBorder}`,
+            borderRadius: 10,
+            padding: '14px 16px',
+            boxShadow: '0 8px 24px rgba(0,0,0,0.35)',
+          }}
+        >
+          <div
+            style={{
+              color: theme.accent,
+              fontSize: 10,
+              textTransform: 'uppercase',
+              letterSpacing: 0.6,
+              marginBottom: 6,
+              fontFamily: theme.fontUI,
+            }}
+          >
+            Season {Math.round(t)}
+          </div>
+          <p style={{ margin: 0, fontFamily: theme.fontDisplay, fontStyle: 'italic', fontSize: 15, lineHeight: 1.55, color: theme.text, opacity: 0.92 }}>
+            {series.seasonSynopses[Math.round(t) - 1]}
+          </p>
         </div>
+        {photosLoading && (
+          <div style={{ marginTop: 8, color: theme.textFaint, fontFamily: theme.fontUI, fontSize: 11 }}>Loading cast photos…</div>
+        )}
       </div>
 
       <TypeLegend />

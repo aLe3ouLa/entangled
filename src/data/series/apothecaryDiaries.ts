@@ -67,12 +67,18 @@ const familyTree: FamilyTree = {
   spouses: [],
 };
 
+const seasonSynopses = [
+  'Sold into servitude in the imperial rear palace, apothecary-in-training Maomao uses her sharp medical knowledge to solve poisonings and court mysteries — catching the attention of the mysterious eunuch official Jinshi along the way.',
+  "Maomao's reputation as a problem-solver grows beyond the rear palace, pulling her deeper into the intrigues of the outer court and closer to secrets about her own past.",
+];
+
 export const apothecaryDiaries: Series = {
   id: 'apothecary-diaries',
   title: 'The Apothecary Diaries',
   searchTitle: 'The Apothecary Diaries',
   characterArtSource: 'anilist',
   seasonCount: 2,
+  seasonSynopses,
   characters,
   relationships,
   familyTree,

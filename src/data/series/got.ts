@@ -342,11 +342,23 @@ const familyTree: FamilyTree = {
   ],
 };
 
+const seasonSynopses = [
+  "The Starks travel south as Ned becomes Hand of the King, uncovering a secret that threatens them all — while beyond the Wall, an ancient enemy stirs and a young queen hatches dragons in exile.",
+  "Five kings vie for the Iron Throne as Westeros tears itself apart in civil war, while Daenerys searches for a way home and the Night's Watch ventures deep into the frozen north.",
+  'Alliances shift and break as the War of the Five Kings grinds on, culminating in a wedding that shatters the Starks — even as Daenerys builds an army and a following in Essos.',
+  "Joffrey's reign ends in blood, plunging King's Landing into a succession crisis, while Jon Snow and the Night's Watch face the massed armies of the wildlings at the Wall.",
+  "New powers rise — a religious movement grips King's Landing, Daenerys struggles to rule the city she's conquered, and Jon Snow wrestles with an impossible choice at the Wall.",
+  'The long-scattered pieces come together: hidden parentage is revealed, the North rallies behind House Stark again, and Daenerys finally turns her fleet toward Westeros.',
+  'Queens and would-be kings converge as Daenerys arrives in Westeros and forges an uneasy alliance with Jon and Cersei against the army of the dead marching south.',
+  "The war for the dawn and the war for the throne collide, deciding who lives, who rules, and what's left of Westeros when it's over.",
+];
+
 export const got: Series = {
   id: 'got',
   title: 'Game of Thrones',
   searchTitle: 'Game of Thrones',
   seasonCount: 8,
+  seasonSynopses,
   characters,
   relationships,
   familyTree,

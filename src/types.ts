@@ -87,6 +87,8 @@ export interface Series {
   /** 'anilist' for animation (real character art, not the voice actor's face); defaults to TMDb cast photos otherwise */
   characterArtSource?: 'tmdb' | 'anilist';
   seasonCount: number;
+  /** one short recap per season, index 0 = season 1 — shown in a box that updates as the scrubber moves */
+  seasonSynopses: string[];
   characters: Character[];
   relationships: Relationship[];
   familyTree?: FamilyTree;
