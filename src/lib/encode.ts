@@ -15,6 +15,11 @@ export function edgeOpacity(frame: RelationshipFrame): number {
   return 0.3 + (frame.trust / 100) * 0.7;
 }
 
+/** dashed = a negative/hostile bond right now (affection below 50), solid = positive */
+export function edgeDash(frame: RelationshipFrame): string | undefined {
+  return frame.affection < 50 ? '7 5' : undefined;
+}
+
 /** high trust+affection pulls nodes close; low pushes them apart */
 export function edgeDistance(frame: RelationshipFrame): number {
   const score = (frame.trust + frame.affection) / 2;

@@ -30,7 +30,7 @@ const relationships: Relationship[] = [
     id: 'ned-catelyn',
     source: 'ned',
     target: 'catelyn',
-    type: 'love',
+    type: 'erotic',
     label: 'A marriage built on duty and love',
     summary: 'An arranged marriage that grew into deep loyalty; her steadiness anchors his sense of honor.',
     seasons: s8([
@@ -54,7 +54,7 @@ const relationships: Relationship[] = [
     id: 'ned-sansa',
     source: 'ned',
     target: 'sansa',
-    type: 'love',
+    type: 'family',
     label: 'Doting father, dutiful daughter',
     summary: "Ned indulges Sansa's dreams of court even as he worries they blind her to danger.",
     seasons: s8([
@@ -66,7 +66,7 @@ const relationships: Relationship[] = [
     id: 'ned-arya',
     source: 'ned',
     target: 'arya',
-    type: 'love',
+    type: 'family',
     label: 'Kindred rebels',
     summary: "Ned quietly encourages Arya's refusal to be a \"proper lady,\" seeing himself in her.",
     seasons: s8([
@@ -186,7 +186,7 @@ const relationships: Relationship[] = [
     id: 'jon-daenerys',
     source: 'jon',
     target: 'daenerys',
-    type: 'love',
+    type: 'erotic',
     label: 'Ice and fire',
     summary: 'Allies who become lovers, undone the moment the throne and blood outweigh what they felt for each other.',
     seasons: s8([
@@ -222,7 +222,7 @@ const relationships: Relationship[] = [
     id: 'cersei-jaime',
     source: 'cersei',
     target: 'jaime',
-    type: 'love',
+    type: 'erotic',
     label: 'Twins, lovers, mirrors',
     summary: "A bond so total it becomes its own undoing — his growing conscience is the one thing she can't control.",
     seasons: s8([

@@ -1,7 +1,8 @@
 import type { RelationshipType } from '../types';
 
 export const RELATIONSHIP_TYPE_COLOR: Record<RelationshipType, string> = {
-  love: '#ec4899',
+  family: '#f9a8d4',
+  erotic: '#db2777',
   conflict: '#ef4444',
   dependence: '#38bdf8',
   betrayal: '#f97316',
@@ -12,7 +13,8 @@ export const RELATIONSHIP_TYPE_COLOR: Record<RelationshipType, string> = {
 };
 
 export const RELATIONSHIP_TYPE_LABEL: Record<RelationshipType, string> = {
-  love: 'Love',
+  family: 'Family',
+  erotic: 'Erotic',
   conflict: 'Conflict',
   dependence: 'Dependence',
   betrayal: 'Betrayal',

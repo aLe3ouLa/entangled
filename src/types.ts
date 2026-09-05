@@ -19,7 +19,8 @@ export interface RelationshipFrame {
 }
 
 export type RelationshipType =
-  | 'love'
+  | 'family'
+  | 'erotic'
   | 'conflict'
   | 'dependence'
   | 'betrayal'

@@ -29,6 +29,19 @@ export function TypeLegend({ style }: { style?: CSSProperties }) {
           <span style={{ opacity: 0.85 }}>{RELATIONSHIP_TYPE_LABEL[t]}</span>
         </div>
       ))}
+      <div style={{ opacity: 0.5, fontSize: 10, textTransform: 'uppercase', margin: '6px 0 2px' }}>Line style</div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+        <svg width={18} height={9}>
+          <line x1={0} y1={4.5} x2={18} y2={4.5} stroke="#9ca3af" strokeWidth={2} />
+        </svg>
+        <span style={{ opacity: 0.85 }}>Positive</span>
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+        <svg width={18} height={9}>
+          <line x1={0} y1={4.5} x2={18} y2={4.5} stroke="#9ca3af" strokeWidth={2} strokeDasharray="4 3" />
+        </svg>
+        <span style={{ opacity: 0.85 }}>Negative</span>
+      </div>
     </div>
   );
 }

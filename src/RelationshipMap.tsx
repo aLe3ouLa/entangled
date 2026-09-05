@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { CharacterAvatar } from './components/CharacterAvatar';
 import { TypeLegend } from './components/TypeLegend';
 import { useForceGraph } from './lib/forceLayout';
-import { edgeColor, edgeDistance, edgeOpacity, edgeWidth, nodeRadius } from './lib/encode';
+import { edgeColor, edgeDash, edgeDistance, edgeOpacity, edgeWidth, nodeRadius } from './lib/encode';
 import { RELATIONSHIP_TYPE_COLOR, RELATIONSHIP_TYPE_LABEL } from './lib/relationshipType';
 import { frameAt, isAlive, valueAt } from './lib/timeline';
 import { useSeriesCast } from './lib/useSeriesCast';
@@ -74,6 +74,7 @@ export function RelationshipMap({ series }: { series: Series }) {
               stroke={edgeColor(r.type)}
               strokeWidth={selectedRel === r.id ? edgeWidth(frame) + 3 : edgeWidth(frame)}
               strokeOpacity={selectedRel === r.id ? 1 : edgeOpacity(frame)}
+              strokeDasharray={edgeDash(frame)}
               strokeLinecap="round"
               onClick={() => openRelationship(r.id)}
               style={{ cursor: 'pointer' }}

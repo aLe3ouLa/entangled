@@ -17,7 +17,7 @@ const relationships: Relationship[] = [
     id: 'maomao-jinshi',
     source: 'maomao',
     target: 'jinshi',
-    type: 'love',
+    type: 'erotic',
     label: "A poison taster and a man who shouldn't matter to her",
     summary: 'What starts as him being a puzzle for her to solve becomes something neither of them planned for.',
     seasons: [
@@ -29,7 +29,7 @@ const relationships: Relationship[] = [
     id: 'maomao-luomen',
     source: 'maomao',
     target: 'luomen',
-    type: 'love',
+    type: 'family',
     label: 'The apothecary who raised her',
     summary: 'A steady, unconditional bond — everything Maomao knows about medicine (and restraint) traces back to him.',
     seasons: [
