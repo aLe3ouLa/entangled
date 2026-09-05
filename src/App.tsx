@@ -1,7 +1,9 @@
 import { useState } from 'react';
+import { Pill } from './components/Pill';
 import { FamilyTreeView } from './FamilyTree';
 import { RelationshipMap } from './RelationshipMap';
 import { SERIES } from './data/series';
+import { theme } from './lib/theme';
 
 type View = 'relationships' | 'family-tree';
 
@@ -12,70 +14,36 @@ export default function App() {
 
   return (
     <>
-      <div
-        style={{
-          position: 'fixed',
-          bottom: 16,
-          left: 16,
-          display: 'flex',
-          gap: 8,
-          zIndex: 1000,
-          fontFamily: 'system-ui, sans-serif',
-        }}
-      >
+      <div style={{ position: 'fixed', bottom: 16, left: 16, display: 'flex', gap: 8, zIndex: 1000 }}>
         {SERIES.map((s) => (
-          <button
-            key={s.id}
-            onClick={() => setSeriesId(s.id)}
-            style={{
-              background: s.id === seriesId ? '#1f2937' : 'rgba(17,24,39,0.7)',
-              border: '1px solid rgba(255,255,255,0.15)',
-              borderRadius: 999,
-              padding: '6px 14px',
-              color: '#e5e7eb',
-              cursor: 'pointer',
-              fontSize: 12,
-              opacity: s.id === seriesId ? 1 : 0.6,
-            }}
-          >
+          <Pill key={s.id} active={s.id === seriesId} onClick={() => setSeriesId(s.id)}>
             {s.title}
-          </button>
+          </Pill>
+        ))}
+      </div>
+
+      <div style={{ position: 'fixed', bottom: 16, right: 16, display: 'flex', gap: 8, zIndex: 1000 }}>
+        {(
+          [
+            ['relationships', 'Relationships'],
+            ['family-tree', 'Family Tree'],
+          ] as const
+        ).map(([key, label]) => (
+          <Pill key={key} active={view === key} onClick={() => setView(key)}>
+            {label}
+          </Pill>
         ))}
       </div>
 
       <div
         style={{
           position: 'fixed',
-          bottom: 16,
-          right: 16,
-          display: 'flex',
-          gap: 8,
-          zIndex: 1000,
-          fontFamily: 'system-ui, sans-serif',
+          inset: 0,
+          background: theme.bgVignette,
+          pointerEvents: 'none',
+          zIndex: 0,
         }}
-      >
-        {([
-          ['relationships', 'Relationships'],
-          ['family-tree', 'Family Tree'],
-        ] as const).map(([key, label]) => (
-          <button
-            key={key}
-            onClick={() => setView(key)}
-            style={{
-              background: view === key ? '#1f2937' : 'rgba(17,24,39,0.7)',
-              border: '1px solid rgba(255,255,255,0.15)',
-              borderRadius: 999,
-              padding: '6px 14px',
-              color: '#e5e7eb',
-              cursor: 'pointer',
-              fontSize: 12,
-              opacity: view === key ? 1 : 0.6,
-            }}
-          >
-            {label}
-          </button>
-        ))}
-      </div>
+      />
 
       {/* key remounts on series/view switch so force-sim and measured-layout state never leak across shows */}
       {view === 'relationships' ? (

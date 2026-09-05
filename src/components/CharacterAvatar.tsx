@@ -1,4 +1,5 @@
 import { avatarUrl } from '../lib/avatar';
+import { theme } from '../lib/theme';
 import type { Character } from '../types';
 
 interface Props {
@@ -13,7 +14,7 @@ interface Props {
 export function CharacterAvatar({ character, radius, highlight, photoUrl }: Props) {
   const clipId = `avatar-clip-${character.id}`;
   return (
-    <>
+    <g style={{ filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.55))' }}>
       <clipPath id={clipId}>
         <circle r={radius} />
       </clipPath>
@@ -27,7 +28,13 @@ export function CharacterAvatar({ character, radius, highlight, photoUrl }: Prop
         preserveAspectRatio="xMidYMid slice"
         clipPath={`url(#${clipId})`}
       />
-      <circle r={radius} fill="none" stroke={highlight ? '#f9fafb' : '#0b0f14'} strokeWidth={highlight ? 3 : 2} />
-    </>
+      <circle
+        r={radius}
+        fill="none"
+        stroke={highlight ? theme.accent : 'rgba(11,9,8,0.9)'}
+        strokeWidth={highlight ? 3 : 2}
+        style={highlight ? { filter: `drop-shadow(0 0 5px ${theme.accentSoft})` } : undefined}
+      />
+    </g>
   );
 }

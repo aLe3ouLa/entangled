@@ -1,6 +1,7 @@
 import { useLayoutEffect, useRef, useState } from 'react';
 import { CharacterAvatar } from './components/CharacterAvatar';
 import { RELATIONSHIP_TYPE_COLOR } from './lib/relationshipType';
+import { theme } from './lib/theme';
 import { useFamilyPhotos } from './lib/useFamilyPhotos';
 import { useWindowSize } from './lib/useWindowSize';
 import type { Character, FamilyLinkKind, FamilyPerson, Series } from './types';
@@ -13,8 +14,8 @@ function personCharacter(p: FamilyPerson, characters: Character[]): Character {
 
 function lineStyle(kind: FamilyLinkKind): { stroke: string; dash?: string } {
   if (kind === 'secret-parent') return { stroke: RELATIONSHIP_TYPE_COLOR['hidden-truth'], dash: '5 4' };
-  if (kind === 'adoptive') return { stroke: '#9ca3af', dash: '5 4' };
-  return { stroke: '#9ca3af' };
+  if (kind === 'adoptive') return { stroke: 'rgba(243,236,223,0.4)', dash: '5 4' };
+  return { stroke: 'rgba(243,236,223,0.4)' };
 }
 
 interface Point {
@@ -51,7 +52,9 @@ function PersonNode({
           </g>
         </svg>
       </div>
-      <div style={{ fontSize: 12, color: '#e5e7eb', marginTop: 6, textAlign: 'center' }}>{person.name}</div>
+      <div style={{ fontFamily: theme.fontDisplay, fontSize: 14, color: theme.text, marginTop: 7, textAlign: 'center' }}>
+        {person.name}
+      </div>
     </div>
   );
 }
@@ -90,7 +93,7 @@ export function FamilyTreeView({ series }: { series: Series }) {
       const a = center(s.a);
       const b = center(s.b);
       if (!a || !b) continue;
-      next.push({ key: `spouse-${s.a}-${s.b}`, a, b, stroke: '#6b7280' });
+      next.push({ key: `spouse-${s.a}-${s.b}`, a, b, stroke: theme.accentSoft });
     }
     setLines(next);
   }, [tree, photos, size]);
@@ -101,12 +104,12 @@ export function FamilyTreeView({ series }: { series: Series }) {
         style={{
           position: 'fixed',
           inset: 0,
-          background: '#0b0f14',
-          color: '#9ca3af',
+          background: theme.bg,
+          color: theme.textMuted,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          fontFamily: 'system-ui, sans-serif',
+          fontFamily: theme.fontUI,
         }}
       >
         No family tree data for this series yet.
@@ -130,21 +133,18 @@ export function FamilyTreeView({ series }: { series: Series }) {
   const notes = tree.links.filter((l) => l.note);
 
   return (
-    <div style={{ position: 'fixed', inset: 0, background: '#0b0f14', overflow: 'auto' }}>
-      <div
-        style={{
-          padding: '32px 24px 16px',
-          color: '#e5e7eb',
-          fontFamily: 'system-ui, sans-serif',
-          fontSize: 13,
-          opacity: 0.7,
-        }}
-      >
-        {series.title} — family tree. Solid = biological parent, dashed gray = raised by (not
-        biological), dashed purple = true parentage kept secret in-story.
+    <div style={{ position: 'fixed', inset: 0, background: theme.bg, overflow: 'auto' }}>
+      <div style={{ padding: '28px 24px 4px' }}>
+        <h1 style={{ margin: 0, color: theme.text, fontFamily: theme.fontDisplay, fontWeight: 600, fontSize: 26, letterSpacing: 0.3 }}>
+          {series.title}
+        </h1>
+        <div style={{ color: theme.textMuted, fontFamily: theme.fontUI, fontSize: 12, marginTop: 6 }}>
+          Solid = biological parent · dashed gray = raised by (not biological) · dashed{' '}
+          <span style={{ color: RELATIONSHIP_TYPE_COLOR['hidden-truth'] }}>gold-violet</span> = true parentage kept secret in-story.
+        </div>
       </div>
 
-      <div ref={containerRef} style={{ position: 'relative', padding: '20px 24px 40px' }}>
+      <div ref={containerRef} style={{ position: 'relative', padding: '28px 24px 40px' }}>
         <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none' }}>
           {lines.map((l) => (
             <line key={l.key} x1={l.a.x} y1={l.a.y} x2={l.b.x} y2={l.b.y} stroke={l.stroke} strokeWidth={2} strokeDasharray={l.dash} />
@@ -174,7 +174,16 @@ export function FamilyTreeView({ series }: { series: Series }) {
 
         {isolatedPeople.length > 0 && (
           <>
-            <div style={{ color: '#6b7280', fontFamily: 'system-ui, sans-serif', fontSize: 11, textTransform: 'uppercase', marginBottom: 14 }}>
+            <div
+              style={{
+                color: theme.textFaint,
+                fontFamily: theme.fontUI,
+                fontSize: 10,
+                textTransform: 'uppercase',
+                letterSpacing: 0.6,
+                marginBottom: 14,
+              }}
+            >
               No tracked family ties in this dataset
             </div>
             <div style={{ display: 'flex', justifyContent: 'center', gap: 40, marginBottom: 20 }}>
@@ -192,10 +201,10 @@ export function FamilyTreeView({ series }: { series: Series }) {
         )}
 
         {notes.length > 0 && (
-          <div style={{ marginTop: 20, color: '#9ca3af', fontFamily: 'system-ui, sans-serif', fontSize: 12, lineHeight: 1.7 }}>
+          <div style={{ marginTop: 20, color: theme.textMuted, fontFamily: theme.fontUI, fontSize: 12, lineHeight: 1.8 }}>
             {notes.map((l) => (
               <div key={`${l.from}-${l.to}-note`}>
-                <strong style={{ color: '#e5e7eb', fontWeight: 500 }}>
+                <strong style={{ color: theme.text, fontWeight: 500 }}>
                   {tree.people.find((p) => p.id === l.from)?.name} → {tree.people.find((p) => p.id === l.to)?.name}:
                 </strong>{' '}
                 {l.note}
