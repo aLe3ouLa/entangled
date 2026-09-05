@@ -1,5 +1,5 @@
 import { useLayoutEffect, useRef, useState } from 'react';
-import { CharacterAvatar } from './components/CharacterAvatar';
+import { AvatarIcon } from './components/AvatarIcon';
 import { RELATIONSHIP_TYPE_COLOR } from './lib/relationshipType';
 import { theme } from './lib/theme';
 import { useFamilyPhotos } from './lib/useFamilyPhotos';
@@ -57,11 +57,7 @@ function PersonNode({
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: 96 }}>
       <div ref={nodeRef} style={{ width: AVATAR_SIZE, height: AVATAR_SIZE }}>
-        <svg width={AVATAR_SIZE} height={AVATAR_SIZE}>
-          <g transform={`translate(${AVATAR_SIZE / 2},${AVATAR_SIZE / 2})`}>
-            <CharacterAvatar character={character} radius={AVATAR_SIZE / 2 - 2} photoUrl={photoUrl} />
-          </g>
-        </svg>
+        <AvatarIcon character={character} size={AVATAR_SIZE} padding={2} photoUrl={photoUrl} />
       </div>
       <div style={{ fontFamily: theme.fontDisplay, fontSize: 14, color: theme.text, marginTop: 7, textAlign: 'center' }}>
         {person.name}

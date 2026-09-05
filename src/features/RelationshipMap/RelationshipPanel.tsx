@@ -1,4 +1,4 @@
-import { CharacterAvatar } from "../../components/CharacterAvatar";
+import { AvatarIcon } from "../../components/AvatarIcon";
 import {
   RELATIONSHIP_TYPE_COLOR,
   RELATIONSHIP_TYPE_LABEL,
@@ -8,6 +8,8 @@ import type { frameAt } from "../../lib/timeline";
 import type { Character, Relationship } from "../../types";
 import { Bar } from "./Bar";
 import { closeButtonStyle } from "./styles";
+
+import styles from "./RelationshipPanel.module.css";
 
 interface RelationshipPanelProps {
   rel: Relationship;
@@ -30,100 +32,31 @@ export const RelationshipPanel = ({
 }: RelationshipPanelProps) => {
   const source = characters.find((c) => c.id === rel.source)!;
   const target = characters.find((c) => c.id === rel.target)!;
+
   return (
-    <div
-      style={{
-        position: "fixed",
-        top: 0,
-        right: 0,
-        bottom: 0,
-        width: 300,
-        zIndex: 950,
-        background: theme.panel,
-        backdropFilter: "blur(10px)",
-        color: theme.text,
-        padding: 20,
-        fontFamily: theme.fontUI,
-        overflowY: "auto",
-        borderLeft: `1px solid ${theme.panelBorder}`,
-        boxShadow: "-16px 0 40px rgba(0,0,0,0.4)",
-      }}
-    >
+    <div className={styles.panel}>
       <button onClick={onBack ?? onClose} style={closeButtonStyle}>
         {onBack ? "← back" : "✕ close"}
       </button>
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: 8,
-          marginBottom: 12,
-        }}
-      >
-        <svg width={40} height={40}>
-          <g transform="translate(20,20)">
-            <CharacterAvatar
-              character={source}
-              radius={20}
-              photoUrl={photos[source.id]}
-            />
-          </g>
-        </svg>
+      <div className={styles.characterRow}>
+        <AvatarIcon character={source} size={40} photoUrl={photos[source.id]} />
         <span style={{ color: theme.textFaint }}>—</span>
-        <svg width={40} height={40}>
-          <g transform="translate(20,20)">
-            <CharacterAvatar
-              character={target}
-              radius={20}
-              photoUrl={photos[target.id]}
-            />
-          </g>
-        </svg>
+        <AvatarIcon character={target} size={40} photoUrl={photos[target.id]} />
       </div>
-      <div style={{ fontSize: 12, color: theme.textMuted, marginBottom: 4 }}>
+      <div className={styles.relationshipName}>
         {source.name.split(" ")[0]} &amp; {target.name.split(" ")[0]}
       </div>
-      <h2
-        style={{
-          margin: "0 0 8px",
-          fontFamily: theme.fontDisplay,
-          fontWeight: 600,
-          fontSize: 22,
-        }}
-      >
-        {rel.label}
-      </h2>
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: 6,
-          fontSize: 12,
-          color: theme.textMuted,
-          marginBottom: 10,
-        }}
-      >
+      <h2 className={styles.relationshipLabel}>{rel.label}</h2>
+      <div className={styles.relationshipTypeRow}>
         <span
+          className={styles.relationshipTypeDot}
           style={{
-            width: 9,
-            height: 9,
-            borderRadius: "50%",
             background: RELATIONSHIP_TYPE_COLOR[type],
           }}
         />
         {RELATIONSHIP_TYPE_LABEL[type]}
       </div>
-      <p
-        style={{
-          fontSize: 13,
-          lineHeight: 1.6,
-          color: theme.text,
-          opacity: 0.9,
-          marginBottom: 20,
-        }}
-      >
-        {rel.summary}
-      </p>
+      <p className={styles.relationshipSummary}>{rel.summary}</p>
       <Bar label="trust" value={frame.trust} />
       <Bar label="affection" value={frame.affection} />
       <Bar label="power" value={frame.power} />

@@ -2,11 +2,29 @@
   color-scheme: dark;
   font-family: "Nunito", system-ui, "Segoe UI", Roboto, sans-serif;
 
-  /* mirrors src/lib/theme.ts — inline styles use theme.* directly, CSS
-     modules use these instead, since a CSS file can't import a TS object */
-  --text-sm: 11px;
+  --bg: #0a0c16;
+  --bg-vignette: radial-gradient(
+    ellipse at 50% 0%,
+    rgba(255, 111, 174, 0.16),
+    transparent 60%
+  );
+
+  --panel: rgba(15, 17, 28, 0.88);
+  --panel-border: rgba(255, 111, 174, 0.25);
+  --hairline: rgba(255, 255, 255, 0.08);
+
+  --text: #f2eef8;
   --text-muted: rgba(242, 238, 248, 0.6);
-  --color-accent: #ff6fae;
+  --text-faint: rgba(242, 238, 248, 0.4);
+
+  --accent: #ff6fae;
+  --accent-soft: rgba(255, 111, 174, 0.35);
+  --accent-dim: rgba(255, 111, 174, 0.16);
+
+  --font-display: "Nunito", system-ui, sans-serif;
+  --font-ui: "Nunito", system-ui, sans-serif;
+
+  --text-sm: 12px;
 }
 
 body {

@@ -1,0 +1,59 @@
+.panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 300px;
+  z-index: 950;
+  padding: 16px;
+  backdrop-filter: blur(10px);
+  overflow-y: auto;
+  box-shadow: -16px 0 32px rgba(0, 0, 0, 0.4);
+  background: var(--panel);
+  color: var(--text);
+  font-family: var(--font-ui);
+  border-left: 1px solid var(--panel-border);
+}
+
+.characterRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.relationshipTypeRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 12px;
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}
+
+.relationshipTypeDot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+}
+
+.relationshipName {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.relationshipLabel {
+  margin: 0 0 8px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 22px;
+}
+
+.relationshipSummary {
+  font-size: 13px;
+  line-height: 1.6;
+  opacity: 0.9;
+  margin-bottom: 18px;
+  color: var(--text);
+}

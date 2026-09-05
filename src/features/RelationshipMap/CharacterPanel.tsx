@@ -1,4 +1,4 @@
-import { CharacterAvatar } from "../../components/CharacterAvatar";
+import { AvatarIcon } from "../../components/AvatarIcon";
 import { theme } from "../../lib/theme";
 import type { Character } from "../../types";
 import { Bar } from "./Bar";
@@ -55,15 +55,12 @@ export function CharacterPanel({
           marginBottom: 10,
         }}
       >
-        <svg width={72} height={72}>
-          <g transform="translate(36,36)">
-            <CharacterAvatar
-              character={character}
-              radius={35}
-              photoUrl={photos[character.id]}
-            />
-          </g>
-        </svg>
+        <AvatarIcon
+          character={character}
+          size={72}
+          padding={1}
+          photoUrl={photos[character.id]}
+        />
         <div>
           <h2
             style={{

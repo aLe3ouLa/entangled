@@ -20,6 +20,6 @@
 
 .barFill {
   height: 100%;
-  background: linear-gradient(90deg, var(--color-accent), #ffb3d9);
+  background: linear-gradient(90deg, var(--accent), #ffb3d9);
   border-radius: 2px;
 }
