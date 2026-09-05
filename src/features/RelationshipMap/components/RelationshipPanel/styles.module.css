@@ -31,27 +31,21 @@
   color: var(--text-muted);
 }
 
-.relationshipTypeDot {
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-}
-
 .relationshipName {
   font-size: var(--text-sm);
   color: var(--text-muted);
-  margin-bottom: 4px;
+  margin-bottom: var(--space-sm);
 }
 
 .relationshipLabel {
   margin: 0 0 8px;
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: 22px;
+  font-size: var(--text-lg);
 }
 
 .relationshipSummary {
-  font-size: 13px;
+  font-size: var(--text-sm);
   line-height: 1.6;
   opacity: 0.9;
   margin-bottom: 18px;

@@ -7,13 +7,13 @@
 
 .barLabel {
   width: 56px;
-  font-size: 10px;
+  font-size: var(--text-sm);
   color: var(--text-muted);
 }
 
 .barBackground {
   flex: 1;
-  height: 4px;
+  height: var(--space-xs);
   background: rgba(255, 255, 255, 0.08);
   border-radius: 2px;
 }

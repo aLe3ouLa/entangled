@@ -1,10 +1,11 @@
 import {
   RELATIONSHIP_TYPE_COLOR,
   RELATIONSHIP_TYPE_LABEL,
-} from "../../lib/relationshipType";
-import type { Relationship } from "../../types";
+} from "@/lib/relationshipType";
+import type { Relationship } from "../../../../types";
+import { Dot } from "../Dot";
 
-import styles from "./TypeTag.module.css";
+import styles from "./styles.module.css";
 
 interface TypeTagProps {
   type: Relationship["type"];
@@ -13,10 +14,7 @@ interface TypeTagProps {
 export const TypeTag = ({ type, label }: TypeTagProps) => {
   return (
     <div className={styles.tagContainer}>
-      <span
-        className={styles.tagDot}
-        style={{ background: RELATIONSHIP_TYPE_COLOR[type] }}
-      />
+      <Dot color={RELATIONSHIP_TYPE_COLOR[type]} />
       <span>
         {label}{" "}
         <span className={styles.tagLabel}>

@@ -7,13 +7,6 @@
   margin-bottom: 6px;
 }
 
-.tagDot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-
 .tagLabel {
   font-weight: 500;
   color: var(--text-muted);

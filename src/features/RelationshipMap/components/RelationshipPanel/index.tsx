@@ -1,15 +1,16 @@
-import { AvatarIcon } from "../../components/AvatarIcon";
+import { AvatarIcon } from "../../../../components/AvatarIcon";
 import {
   RELATIONSHIP_TYPE_COLOR,
   RELATIONSHIP_TYPE_LABEL,
-} from "../../lib/relationshipType";
-import { theme } from "../../lib/theme";
-import type { frameAt } from "../../lib/timeline";
-import type { Character, Relationship } from "../../types";
-import { Bar } from "./Bar";
-import { closeButtonStyle } from "./styles";
+} from "@/lib/relationshipType";
+import { theme } from "../../../../lib/theme";
+import type { frameAt } from "../../../../lib/timeline";
+import type { Character, Relationship } from "../../../../types";
+import { Bar } from "../Bar";
+import { PanelCloseButton } from "../PanelCloseButton";
 
-import styles from "./RelationshipPanel.module.css";
+import styles from "./styles.module.css";
+import { Dot } from "../Dot";
 
 interface RelationshipPanelProps {
   rel: Relationship;
@@ -35,9 +36,9 @@ export const RelationshipPanel = ({
 
   return (
     <div className={styles.panel}>
-      <button onClick={onBack ?? onClose} style={closeButtonStyle}>
+      <PanelCloseButton onClick={onBack ?? onClose}>
         {onBack ? "← back" : "✕ close"}
-      </button>
+      </PanelCloseButton>
       <div className={styles.characterRow}>
         <AvatarIcon character={source} size={40} photoUrl={photos[source.id]} />
         <span style={{ color: theme.textFaint }}>—</span>
@@ -48,12 +49,7 @@ export const RelationshipPanel = ({
       </div>
       <h2 className={styles.relationshipLabel}>{rel.label}</h2>
       <div className={styles.relationshipTypeRow}>
-        <span
-          className={styles.relationshipTypeDot}
-          style={{
-            background: RELATIONSHIP_TYPE_COLOR[type],
-          }}
-        />
+        <Dot color={RELATIONSHIP_TYPE_COLOR[type]} />
         {RELATIONSHIP_TYPE_LABEL[type]}
       </div>
       <p className={styles.relationshipSummary}>{rel.summary}</p>

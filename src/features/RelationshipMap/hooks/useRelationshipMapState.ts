@@ -1,14 +1,20 @@
 import { useMemo, useState } from "react";
-import { edgeDistance } from "../../lib/encode";
-import { useForceGraph } from "../../lib/forceLayout";
-import { frameAt, hasAppeared, isAlive, typeAt, valueAt } from "../../lib/timeline";
+import { edgeDistance } from "../../../lib/encode";
+import { useForceGraph } from "../../../lib/forceLayout";
+import {
+  frameAt,
+  hasAppeared,
+  isAlive,
+  typeAt,
+  valueAt,
+} from "../../../lib/timeline";
 import type {
   Character,
   Relationship,
   RelationshipFrame,
   RelationshipType,
   Series,
-} from "../../types";
+} from "../../../types";
 
 export interface RelationshipRow {
   rel: Relationship;
@@ -36,7 +42,12 @@ export function useRelationshipMapState(
 
   const nodeIds = useMemo(() => characters.map((c) => c.id), [characters]);
   const linkDefs = useMemo(
-    () => relationships.map((r) => ({ id: r.id, source: r.source, target: r.target })),
+    () =>
+      relationships.map((r) => ({
+        id: r.id,
+        source: r.source,
+        target: r.target,
+      })),
     [relationships],
   );
 
@@ -56,18 +67,23 @@ export function useRelationshipMapState(
 
   const presentIds = useMemo(() => {
     const ids = new Set<string>();
-    for (const c of characters) if (hasAppeared(c.firstSeason, t)) ids.add(c.id);
+    for (const c of characters)
+      if (hasAppeared(c.firstSeason, t)) ids.add(c.id);
     return ids;
   }, [characters, t]);
 
   const [rawSelected, setRawSelected] = useState<string | null>(null);
   const [rawSelectedRel, setRawSelectedRel] = useState<string | null>(null);
 
-  const selected = rawSelected && presentIds.has(rawSelected) ? rawSelected : null;
+  const selected =
+    rawSelected && presentIds.has(rawSelected) ? rawSelected : null;
 
-  const rawRelDetail = relationships.find((r) => r.id === rawSelectedRel) ?? null;
+  const rawRelDetail =
+    relationships.find((r) => r.id === rawSelectedRel) ?? null;
   const selectedRel =
-    rawRelDetail && presentIds.has(rawRelDetail.source) && presentIds.has(rawRelDetail.target)
+    rawRelDetail &&
+    presentIds.has(rawRelDetail.source) &&
+    presentIds.has(rawRelDetail.target)
       ? rawSelectedRel
       : null;
 
@@ -86,7 +102,9 @@ export function useRelationshipMapState(
     [characters, selected],
   );
 
-  const selectedCharAlive = selectedChar ? isAlive(selectedChar.aliveUntil, t) : false;
+  const selectedCharAlive = selectedChar
+    ? isAlive(selectedChar.aliveUntil, t)
+    : false;
   const selectedCharProminence = selectedChar
     ? Math.round(valueAt(selectedChar.prominence, t))
     : 0;
@@ -94,7 +112,9 @@ export function useRelationshipMapState(
   const selectedRelRows: RelationshipRow[] = useMemo(() => {
     if (!selectedChar) return [];
     return relationships
-      .filter((r) => r.source === selectedChar.id || r.target === selectedChar.id)
+      .filter(
+        (r) => r.source === selectedChar.id || r.target === selectedChar.id,
+      )
       .map((r) => {
         const otherId = r.source === selectedChar.id ? r.target : r.source;
         const other = characters.find((c) => c.id === otherId)!;

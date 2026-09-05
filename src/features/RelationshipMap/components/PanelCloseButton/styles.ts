@@ -1,4 +1,4 @@
-import { theme } from "../../lib/theme";
+import { theme } from "../../../../lib/theme";
 
 export const closeButtonStyle = {
   background: "none",

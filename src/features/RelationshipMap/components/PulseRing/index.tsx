@@ -1,4 +1,4 @@
-import { theme } from "../../lib/theme";
+import { theme } from "@/lib/theme";
 
 interface PulseRingProps {
   radius: number;

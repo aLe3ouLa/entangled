@@ -1,0 +1,6 @@
+.dot {
+  width: var(--dot-size, 8px);
+  height: var(--dot-size, 8px);
+  border-radius: 50%;
+  flex-shrink: 0;
+}

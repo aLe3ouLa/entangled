@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Pill } from "./components/Pill";
 import { FamilyTreeView } from "./FamilyTree";
-import { RelationshipMap } from "./RelationshipMap";
+import { RelationshipMap } from "./features/RelationshipMap";
 import { SERIES } from "./data/series";
 import { theme } from "./lib/theme";
 

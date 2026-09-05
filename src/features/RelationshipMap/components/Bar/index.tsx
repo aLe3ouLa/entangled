@@ -1,4 +1,4 @@
-import styles from "./Bar.module.css";
+import styles from "./styles.module.css";
 
 interface BarProps {
   label: string;

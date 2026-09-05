@@ -1,19 +1,25 @@
 import { useRef, useState } from "react";
-import { CharacterAvatar } from "./components/CharacterAvatar";
-import { TypeLegend } from "./components/TypeLegend";
-import { ZoomControls } from "./components/ZoomControls";
-import { edgeColor, edgeDash, edgeOpacity, edgeWidth, nodeRadius } from "./lib/encode";
-import { usePanZoom } from "./lib/usePanZoom";
-import { RELATIONSHIP_TYPE_LABEL } from "./lib/relationshipType";
-import { theme } from "./lib/theme";
-import { isAlive, typeAt, valueAt } from "./lib/timeline";
-import { useSeriesCast } from "./lib/useSeriesCast";
-import { useWindowSize } from "./lib/useWindowSize";
-import type { Series } from "./types";
-import { CharacterPanel } from "./features/RelationshipMap/CharacterPanel";
-import { PulseRing } from "./features/RelationshipMap/PulseRing";
-import { RelationshipPanel } from "./features/RelationshipMap/RelationshipPanel";
-import { useRelationshipMapState } from "./features/RelationshipMap/useRelationshipMapState";
+import { CharacterAvatar } from "../../components/CharacterAvatar";
+import { TypeLegend } from "../../components/TypeLegend";
+import { ZoomControls } from "../../components/ZoomControls";
+import {
+  edgeColor,
+  edgeDash,
+  edgeOpacity,
+  edgeWidth,
+  nodeRadius,
+} from "../../lib/encode";
+import { usePanZoom } from "../../lib/usePanZoom";
+import { RELATIONSHIP_TYPE_LABEL } from "../../lib/relationshipType";
+import { theme } from "../../lib/theme";
+import { isAlive, typeAt, valueAt } from "../../lib/timeline";
+import { useSeriesCast } from "../../lib/useSeriesCast";
+import { useWindowSize } from "../../lib/useWindowSize";
+import type { Series } from "../../types";
+import { CharacterPanel } from "./components/CharacterPanel";
+import { PulseRing } from "./components/PulseRing";
+import { RelationshipPanel } from "./components/RelationshipPanel";
+import { useRelationshipMapState } from "./hooks/useRelationshipMapState";
 
 /**
  * One big force graph with a bottom scrubber you drag continuously across

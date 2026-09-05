@@ -1,0 +1,85 @@
+.characterPanel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 300px;
+  z-index: 950;
+  background: var(--panel);
+  backdrop-filter: blur(10px);
+  color: var(--text);
+  padding: 20px;
+  font-family: var(--font-ui);
+  overflow-y: auto;
+  border-left: 1px solid var(--panel-border);
+  box-shadow: -16px 0 40px rgba(0, 0, 0, 0.4);
+}
+
+.characterHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.characterName {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-lg);
+  margin: 0;
+}
+
+.characterHouse {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}
+
+.characterStatus {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+.statusText {
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.characterBio {
+  margin: 0 0 14px;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: var(--text-sm);
+  color: var(--text);
+  line-height: 1.55;
+  opacity: 0.9;
+}
+
+.relationshipsHeader {
+  color: var(--accent);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin: 20px 0 4px;
+}
+
+.relationshipRow {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  border-top: 1px solid var(--hairline);
+  color: inherit;
+  cursor: pointer;
+  padding: 10px 0;
+}
+
+.otherName {
+  font-family: var(--font-display);
+  font-size: var(--text-md);
+  margin-bottom: var(--space-xs);
+}

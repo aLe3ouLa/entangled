@@ -25,6 +25,13 @@
   --font-ui: "Nunito", system-ui, sans-serif;
 
   --text-sm: 12px;
+  --text-md: 16px;
+  --text-lg: 22px;
+
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
 }
 
 body {
