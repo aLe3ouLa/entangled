@@ -11,18 +11,114 @@ function s8(frames: [number, number, number, number][]): RelationshipFrame[] {
 }
 
 const characters: Character[] = [
-  { id: 'ned', name: 'Ned Stark', house: 'Stark', color: '#7c93a8', aliveUntil: 1, prominence: [95, 35, 20, 15, 10, 8, 6, 5] },
-  { id: 'catelyn', name: 'Catelyn Stark', house: 'Stark', color: '#7c93a8', aliveUntil: 3, prominence: [80, 75, 55, 10, 8, 6, 5, 4] },
-  { id: 'robb', name: 'Robb Stark', house: 'Stark', color: '#7c93a8', aliveUntil: 3, prominence: [50, 85, 80, 10, 8, 6, 5, 4] },
-  { id: 'sansa', name: 'Sansa Stark', house: 'Stark', color: '#7c93a8', aliveUntil: 8, prominence: [70, 65, 70, 75, 70, 80, 85, 80] },
-  { id: 'arya', name: 'Arya Stark', house: 'Stark', color: '#7c93a8', aliveUntil: 8, prominence: [65, 70, 75, 80, 70, 75, 80, 75] },
-  { id: 'jon', name: 'Jon Snow', house: 'Stark', color: '#7c93a8', aliveUntil: 8, prominence: [75, 80, 70, 75, 85, 90, 90, 95] },
-  { id: 'theon', name: 'Theon Greyjoy', house: 'Greyjoy', color: '#16697a', aliveUntil: 8, prominence: [55, 80, 20, 60, 55, 50, 45, 55] },
-  { id: 'tyrion', name: 'Tyrion Lannister', house: 'Lannister', color: '#c0392b', aliveUntil: 8, prominence: [85, 90, 85, 90, 80, 85, 80, 75] },
-  { id: 'cersei', name: 'Cersei Lannister', house: 'Lannister', color: '#c0392b', aliveUntil: 8, prominence: [60, 70, 60, 80, 75, 85, 85, 90] },
-  { id: 'jaime', name: 'Jaime Lannister', house: 'Lannister', color: '#c0392b', aliveUntil: 8, prominence: [55, 60, 55, 70, 75, 70, 70, 80] },
-  { id: 'daenerys', name: 'Daenerys Targaryen', house: 'Targaryen', color: '#8e44ad', aliveUntil: 8, prominence: [70, 75, 80, 75, 85, 90, 90, 95] },
-  { id: 'petyr', name: 'Petyr Baelish', house: 'none', color: '#a1662f', aliveUntil: 7, prominence: [50, 55, 60, 65, 60, 70, 75, 0] },
+  {
+    id: 'ned',
+    name: 'Ned Stark',
+    house: 'Stark',
+    color: '#7c93a8',
+    bio: 'Lord of Winterfell and Warden of the North — a man of rigid honor who believes the truth matters more than his own safety, in a capital where it rarely does.',
+    aliveUntil: 1,
+    prominence: [95, 35, 20, 15, 10, 8, 6, 5],
+  },
+  {
+    id: 'catelyn',
+    name: 'Catelyn Stark',
+    house: 'Stark',
+    color: '#7c93a8',
+    bio: "Lady of Winterfell, fiercely protective of her children — her decisions to save her daughters ripple out into consequences she never intended.",
+    aliveUntil: 3,
+    prominence: [80, 75, 55, 10, 8, 6, 5, 4],
+  },
+  {
+    id: 'robb',
+    name: 'Robb Stark',
+    house: 'Stark',
+    color: '#7c93a8',
+    bio: "Ned and Catelyn's eldest son, crowned King in the North by his own bannermen after his father's death — a gifted commander who never loses a battle, only the peace after it.",
+    aliveUntil: 3,
+    prominence: [50, 85, 80, 10, 8, 6, 5, 4],
+  },
+  {
+    id: 'sansa',
+    name: 'Sansa Stark',
+    house: 'Stark',
+    color: '#7c93a8',
+    bio: "The eldest Stark daughter, raised on songs of chivalry — her years as a hostage in King's Landing and Petyr Baelish's pupil forge her into the family's sharpest political mind.",
+    aliveUntil: 8,
+    prominence: [70, 65, 70, 75, 70, 80, 85, 80],
+  },
+  {
+    id: 'arya',
+    name: 'Arya Stark',
+    house: 'Stark',
+    color: '#7c93a8',
+    bio: 'The younger Stark daughter, uninterested in ladylike pursuits from the start — a brutal education in survival turns her into one of the deadliest people in Westeros.',
+    aliveUntil: 8,
+    prominence: [65, 70, 75, 80, 70, 75, 80, 75],
+  },
+  {
+    id: 'jon',
+    name: 'Jon Snow',
+    house: 'Stark',
+    color: '#7c93a8',
+    bio: "Raised as Ned Stark's bastard son, he takes the black at the Wall — his rise to Lord Commander and beyond is shadowed by a parentage even he doesn't know.",
+    aliveUntil: 8,
+    prominence: [75, 80, 70, 75, 85, 90, 90, 95],
+  },
+  {
+    id: 'theon',
+    name: 'Theon Greyjoy',
+    house: 'Greyjoy',
+    color: '#16697a',
+    bio: "A Greyjoy raised as a ward in Winterfell after his father's failed rebellion — his need to prove himself to his own blood costs him everything he built with the Starks.",
+    aliveUntil: 8,
+    prominence: [55, 80, 20, 60, 55, 50, 45, 55],
+  },
+  {
+    id: 'tyrion',
+    name: 'Tyrion Lannister',
+    house: 'Lannister',
+    color: '#c0392b',
+    bio: 'The youngest Lannister, a sharp-tongued dwarf dismissed by his own family — his wit and political instincts make him one of the most capable minds in Westeros.',
+    aliveUntil: 8,
+    prominence: [85, 90, 85, 90, 80, 85, 80, 75],
+  },
+  {
+    id: 'cersei',
+    name: 'Cersei Lannister',
+    house: 'Lannister',
+    color: '#c0392b',
+    bio: "Eldest of Tywin Lannister's children, queen by marriage and increasingly by will alone — convinced the throne is hers by right, whatever the cost of keeping it.",
+    aliveUntil: 8,
+    prominence: [60, 70, 60, 80, 75, 85, 85, 90],
+  },
+  {
+    id: 'jaime',
+    name: 'Jaime Lannister',
+    house: 'Lannister',
+    color: '#c0392b',
+    bio: 'Twin to Cersei, a knight whose reputation as the "Kingslayer" follows him everywhere — the story of what he actually did, and why, is more complicated than the name implies.',
+    aliveUntil: 8,
+    prominence: [55, 60, 55, 70, 75, 70, 70, 80],
+  },
+  {
+    id: 'daenerys',
+    name: 'Daenerys Targaryen',
+    house: 'Targaryen',
+    color: '#8e44ad',
+    bio: "Last scion of the fallen House Targaryen, sold into a marriage of alliance in exile — mother of three dragons and a claimant to a throne she's never seen.",
+    aliveUntil: 8,
+    prominence: [70, 75, 80, 75, 85, 90, 90, 95],
+  },
+  {
+    id: 'petyr',
+    name: 'Petyr Baelish',
+    house: 'none',
+    color: '#a1662f',
+    bio: "Low-born but relentlessly ambitious, he climbs from minor lordling to master of the capital's finances and secrets — everyone underestimates him exactly once.",
+    aliveUntil: 7,
+    prominence: [50, 55, 60, 65, 60, 70, 75, 0],
+  },
 ];
 
 const relationships: Relationship[] = [
@@ -268,6 +364,17 @@ const relationships: Relationship[] = [
   },
 ];
 
+const seasonSynopses = [
+  "The Starks travel south as Ned becomes Hand of the King, uncovering a secret that threatens them all — while beyond the Wall, an ancient enemy stirs and a young queen hatches dragons in exile.",
+  "Five kings vie for the Iron Throne as Westeros tears itself apart in civil war, while Daenerys searches for a way home and the Night's Watch ventures deep into the frozen north.",
+  'Alliances shift and break as the War of the Five Kings grinds on, culminating in a wedding that shatters the Starks — even as Daenerys builds an army and a following in Essos.',
+  "Joffrey's reign ends in blood, plunging King's Landing into a succession crisis, while Jon Snow and the Night's Watch face the massed armies of the wildlings at the Wall.",
+  "New powers rise — a religious movement grips King's Landing, Daenerys struggles to rule the city she's conquered, and Jon Snow wrestles with an impossible choice at the Wall.",
+  'The long-scattered pieces come together: hidden parentage is revealed, the North rallies behind House Stark again, and Daenerys finally turns her fleet toward Westeros.',
+  'Queens and would-be kings converge as Daenerys arrives in Westeros and forges an uneasy alliance with Jon and Cersei against the army of the dead marching south.',
+  "The war for the dawn and the war for the throne collide, deciding who lives, who rules, and what's left of Westeros when it's over.",
+];
+
 const familyTree: FamilyTree = {
   people: [
     // generation 0 — grandparents' generation, none of these are tracked Characters
@@ -341,17 +448,6 @@ const familyTree: FamilyTree = {
     { a: 'cersei', b: 'robert-baratheon' },
   ],
 };
-
-const seasonSynopses = [
-  "The Starks travel south as Ned becomes Hand of the King, uncovering a secret that threatens them all — while beyond the Wall, an ancient enemy stirs and a young queen hatches dragons in exile.",
-  "Five kings vie for the Iron Throne as Westeros tears itself apart in civil war, while Daenerys searches for a way home and the Night's Watch ventures deep into the frozen north.",
-  'Alliances shift and break as the War of the Five Kings grinds on, culminating in a wedding that shatters the Starks — even as Daenerys builds an army and a following in Essos.',
-  "Joffrey's reign ends in blood, plunging King's Landing into a succession crisis, while Jon Snow and the Night's Watch face the massed armies of the wildlings at the Wall.",
-  "New powers rise — a religious movement grips King's Landing, Daenerys struggles to rule the city she's conquered, and Jon Snow wrestles with an impossible choice at the Wall.",
-  'The long-scattered pieces come together: hidden parentage is revealed, the North rallies behind House Stark again, and Daenerys finally turns her fleet toward Westeros.',
-  'Queens and would-be kings converge as Daenerys arrives in Westeros and forges an uneasy alliance with Jon and Cersei against the army of the dead marching south.',
-  "The war for the dawn and the war for the throne collide, deciding who lives, who rules, and what's left of Westeros when it's over.",
-];
 
 export const got: Series = {
   id: 'got',

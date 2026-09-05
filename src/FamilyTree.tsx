@@ -9,7 +9,17 @@ import type { Character, FamilyLinkKind, FamilyPerson, Series } from './types';
 const AVATAR_SIZE = 48;
 
 function personCharacter(p: FamilyPerson, characters: Character[]): Character {
-  return characters.find((c) => c.id === p.id) ?? { id: p.id, name: p.name, house: '', color: p.color ?? '#6b7280', aliveUntil: 1, prominence: [100] };
+  return (
+    characters.find((c) => c.id === p.id) ?? {
+      id: p.id,
+      name: p.name,
+      house: '',
+      color: p.color ?? '#6b7280',
+      bio: '',
+      aliveUntil: 1,
+      prominence: [100],
+    }
+  );
 }
 
 function lineStyle(kind: FamilyLinkKind): { stroke: string; dash?: string } {

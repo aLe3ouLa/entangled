@@ -6,10 +6,42 @@ import type { Character, FamilyTree, Relationship, Series } from '../../types';
 // not carefully researched the way the GoT data was — expand or correct freely.
 
 const characters: Character[] = [
-  { id: 'maomao', name: 'Maomao', house: 'Apothecary', color: '#8fae7d', aliveUntil: 2, prominence: [95, 95] },
-  { id: 'jinshi', name: 'Jinshi', house: 'Outer Court', color: '#d4af7a', aliveUntil: 2, prominence: [70, 80] },
-  { id: 'luomen', name: 'Luomen', house: 'Apothecary', color: '#7a8fae', aliveUntil: 2, prominence: [40, 45] },
-  { id: 'xiaolan', name: 'Xiaolan', house: 'Rear Palace', color: '#c98a9e', aliveUntil: 2, prominence: [35, 35] },
+  {
+    id: 'maomao',
+    name: 'Maomao',
+    house: 'Apothecary',
+    color: '#8fae7d',
+    bio: "A trained apothecary sold into servitude in the rear palace — she'd rather be left alone with her poisons and herbs, but her knack for spotting what everyone else misses keeps pulling her into court intrigue.",
+    aliveUntil: 2,
+    prominence: [95, 95],
+  },
+  {
+    id: 'jinshi',
+    name: 'Jinshi',
+    house: 'Outer Court',
+    color: '#d4af7a',
+    bio: 'A eunuch official of striking beauty and real influence in the outer court — not everything about his position is what it appears to be.',
+    aliveUntil: 2,
+    prominence: [70, 80],
+  },
+  {
+    id: 'luomen',
+    name: 'Luomen',
+    house: 'Apothecary',
+    color: '#7a8fae',
+    bio: 'The apothecary who raised Maomao in the pleasure district — quietly brilliant, endlessly patient, and the source of everything she knows about medicine.',
+    aliveUntil: 2,
+    prominence: [40, 45],
+  },
+  {
+    id: 'xiaolan',
+    name: 'Xiaolan',
+    house: 'Rear Palace',
+    color: '#c98a9e',
+    bio: 'A cheerful, none-too-bright serving girl in the rear palace — one of the few people Maomao treats as a genuine friend rather than a puzzle to solve.',
+    aliveUntil: 2,
+    prominence: [35, 35],
+  },
 ];
 
 const relationships: Relationship[] = [

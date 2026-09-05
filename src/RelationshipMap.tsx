@@ -211,7 +211,7 @@ export function RelationshipMap({ series }: { series: Series }) {
             <button onClick={() => setSelected(null)} style={closeButtonStyle}>
               ✕ close
             </button>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 14 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 10 }}>
               <svg width={72} height={72}>
                 <g transform="translate(36,36)">
                   <CharacterAvatar character={selectedChar} radius={35} photoUrl={photos[selectedChar.id]} />
@@ -222,8 +222,45 @@ export function RelationshipMap({ series }: { series: Series }) {
                 <div style={{ fontSize: 12, color: theme.textMuted }}>House {selectedChar.house}</div>
               </div>
             </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, marginBottom: 12 }}>
+              <span
+                style={{
+                  width: 7,
+                  height: 7,
+                  borderRadius: '50%',
+                  background: isAlive(selectedChar.aliveUntil, t) ? '#4ade80' : '#6b7280',
+                  flexShrink: 0,
+                }}
+              />
+              <span style={{ color: theme.textMuted }}>
+                {isAlive(selectedChar.aliveUntil, t) ? 'Alive' : `Deceased — last seen Season ${selectedChar.aliveUntil}`}
+              </span>
+            </div>
+            <p
+              style={{
+                margin: '0 0 14px',
+                fontFamily: theme.fontDisplay,
+                fontStyle: 'italic',
+                fontSize: 14,
+                lineHeight: 1.55,
+                color: theme.text,
+                opacity: 0.9,
+              }}
+            >
+              {selectedChar.bio}
+            </p>
             <MiniBar label="importance" value={Math.round(valueAt(selectedChar.prominence, t))} />
-            <div style={{ marginBottom: 16 }} />
+            <div
+              style={{
+                color: theme.accent,
+                fontSize: 10,
+                textTransform: 'uppercase',
+                letterSpacing: 0.6,
+                margin: '20px 0 4px',
+              }}
+            >
+              Relationships
+            </div>
             {selectedRels.map((r) => {
               const other = characters.find((c) => c.id === (r.source === selectedChar.id ? r.target : r.source))!;
               const frame = frames[r.id];

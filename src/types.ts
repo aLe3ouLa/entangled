@@ -3,6 +3,8 @@ export interface Character {
   name: string;
   house: string;
   color: string;
+  /** one or two sentences on who they are, for a reader who doesn't know the show */
+  bio: string;
   /** last season the character is alive/active; seasonCount if they survive throughout */
   aliveUntil: number;
   /** how much the story is "about" them that season (screen time + being talked about), one per season, 0-100 */
