@@ -42,12 +42,52 @@ export interface Relationship {
   seasons: RelationshipFrame[];
 }
 
+/** genealogy is static — no seasons, no scores, just who's related to whom */
+export interface FamilyPerson {
+  id: string;
+  name: string;
+  /** 0 = oldest tracked generation, increasing = younger. Hand-assigned rather than
+   *  derived, because two unrelated houses (e.g. Stark/Lannister) can't be aligned
+   *  by graph distance alone — nothing connects their trees to a common ancestor. */
+  generation: number;
+  /** only needed for people who aren't already a tracked Character (e.g. an
+   *  ancestor who never appears in the relationship graph) */
+  color?: string;
+}
+
+export type FamilyLinkKind =
+  | 'parent'
+  | 'adoptive'
+  /** true parentage the story treats as a secret/reveal — rendered dashed */
+  | 'secret-parent';
+
+export interface FamilyLink {
+  from: string;
+  to: string;
+  kind: FamilyLinkKind;
+  note?: string;
+}
+
+export interface FamilySpouse {
+  a: string;
+  b: string;
+}
+
+export interface FamilyTree {
+  people: FamilyPerson[];
+  links: FamilyLink[];
+  spouses: FamilySpouse[];
+}
+
 export interface Series {
   id: string;
   title: string;
-  /** search query to resolve this show on TMDb — not a hardcoded numeric id, so adding a series never requires looking one up */
-  tmdbTitle: string;
+  /** search query to resolve this show with whichever art source is active — not a hardcoded numeric id, so adding a series never requires looking one up */
+  searchTitle: string;
+  /** 'anilist' for animation (real character art, not the voice actor's face); defaults to TMDb cast photos otherwise */
+  characterArtSource?: 'tmdb' | 'anilist';
   seasonCount: number;
   characters: Character[];
   relationships: Relationship[];
+  familyTree?: FamilyTree;
 }

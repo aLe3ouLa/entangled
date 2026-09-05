@@ -1,4 +1,4 @@
-import type { Character, Relationship, Series } from '../../types';
+import type { Character, FamilyTree, Relationship, Series } from '../../types';
 
 // STUB — a rough first pass proving the multi-series architecture holds for a
 // very differently-shaped show (2 "parts" so far, not 8 Western-TV seasons,
@@ -51,11 +51,29 @@ const relationships: Relationship[] = [
   },
 ];
 
+// Minimal on purpose — mirrors Jon Snow's "raised by one, secretly born of another"
+// pattern (Maomao's biological father isn't Luomen, revealed later in the story),
+// same as the rest of this file's data: a first pass, not deeply researched.
+const familyTree: FamilyTree = {
+  people: [
+    { id: 'luomen', name: 'Luomen', generation: 0 },
+    { id: 'lakan', name: 'Lakan', generation: 0, color: '#5b6b8c' },
+    { id: 'maomao', name: 'Maomao', generation: 1 },
+  ],
+  links: [
+    { from: 'luomen', to: 'maomao', kind: 'adoptive', note: 'Raised her; not her biological father' },
+    { from: 'lakan', to: 'maomao', kind: 'secret-parent', note: 'Not known to Maomao at first' },
+  ],
+  spouses: [],
+};
+
 export const apothecaryDiaries: Series = {
   id: 'apothecary-diaries',
   title: 'The Apothecary Diaries',
-  tmdbTitle: 'The Apothecary Diaries',
+  searchTitle: 'The Apothecary Diaries',
+  characterArtSource: 'anilist',
   seasonCount: 2,
   characters,
   relationships,
+  familyTree,
 };

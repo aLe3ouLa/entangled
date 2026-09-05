@@ -1,4 +1,4 @@
-import type { Character, Relationship, RelationshipFrame, Series } from '../../types';
+import type { Character, FamilyTree, Relationship, RelationshipFrame, Series } from '../../types';
 
 function f(trust: number, affection: number, power: number, tension: number): RelationshipFrame {
   return { trust, affection, power, tension };
@@ -268,11 +268,49 @@ const relationships: Relationship[] = [
   },
 ];
 
+const familyTree: FamilyTree = {
+  people: [
+    // generation 0 — parents' generation, plus anyone with no tracked family
+    { id: 'ned', name: 'Ned Stark', generation: 0 },
+    { id: 'catelyn', name: 'Catelyn Stark', generation: 0 },
+    { id: 'lyanna-stark', name: 'Lyanna Stark', generation: 0, color: '#7c93a8' },
+    { id: 'rhaegar-targaryen', name: 'Rhaegar Targaryen', generation: 0, color: '#8e44ad' },
+    { id: 'tywin-lannister', name: 'Tywin Lannister', generation: 0, color: '#c0392b' },
+    { id: 'daenerys', name: 'Daenerys Targaryen', generation: 0 },
+    { id: 'theon', name: 'Theon Greyjoy', generation: 0 },
+    { id: 'petyr', name: 'Petyr Baelish', generation: 0 },
+    // generation 1
+    { id: 'robb', name: 'Robb Stark', generation: 1 },
+    { id: 'sansa', name: 'Sansa Stark', generation: 1 },
+    { id: 'arya', name: 'Arya Stark', generation: 1 },
+    { id: 'jon', name: 'Jon Snow', generation: 1 },
+    { id: 'cersei', name: 'Cersei Lannister', generation: 1 },
+    { id: 'jaime', name: 'Jaime Lannister', generation: 1 },
+    { id: 'tyrion', name: 'Tyrion Lannister', generation: 1 },
+  ],
+  links: [
+    { from: 'ned', to: 'robb', kind: 'parent' },
+    { from: 'catelyn', to: 'robb', kind: 'parent' },
+    { from: 'ned', to: 'sansa', kind: 'parent' },
+    { from: 'catelyn', to: 'sansa', kind: 'parent' },
+    { from: 'ned', to: 'arya', kind: 'parent' },
+    { from: 'catelyn', to: 'arya', kind: 'parent' },
+    { from: 'ned', to: 'jon', kind: 'adoptive', note: "Raised as his son — the realm believes Jon is Ned's bastard" },
+    { from: 'rhaegar-targaryen', to: 'jon', kind: 'secret-parent', note: 'Not publicly known' },
+    { from: 'lyanna-stark', to: 'jon', kind: 'secret-parent', note: 'Not publicly known' },
+    { from: 'tywin-lannister', to: 'cersei', kind: 'parent' },
+    { from: 'tywin-lannister', to: 'jaime', kind: 'parent' },
+    { from: 'tywin-lannister', to: 'tyrion', kind: 'parent' },
+  ],
+  spouses: [{ a: 'ned', b: 'catelyn' }],
+};
+
 export const got: Series = {
   id: 'got',
   title: 'Game of Thrones',
-  tmdbTitle: 'Game of Thrones',
+  searchTitle: 'Game of Thrones',
   seasonCount: 8,
   characters,
   relationships,
+  familyTree,
 };

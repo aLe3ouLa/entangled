@@ -1,29 +1,22 @@
 import { useEffect, useState } from 'react';
 import type { Series } from '../types';
-import { findProfilePath } from './castMatch';
-import { getAggregateCast, isConfigured, profileUrl } from './tmdb';
+import { isArtAvailable, resolvePhotos } from './resolveArt';
 
-/** character id -> real cast photo URL, or null if unmatched/unavailable */
+/** character id -> real photo/art URL, or null if unmatched/unavailable */
 export function useSeriesCast(series: Series) {
   const [photos, setPhotos] = useState<Record<string, string | null>>({});
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (!isConfigured()) {
+    if (!isArtAvailable(series)) {
       setPhotos({});
       return;
     }
     let cancelled = false;
     setLoading(true);
-    getAggregateCast(series.tmdbTitle)
-      .then((cast) => {
-        if (cancelled) return;
-        const next: Record<string, string | null> = {};
-        for (const c of series.characters) {
-          const path = findProfilePath(cast, c.tmdbCharacterName ?? c.name);
-          next[c.id] = profileUrl(path);
-        }
-        setPhotos(next);
+    resolvePhotos(series, series.characters)
+      .then((next) => {
+        if (!cancelled) setPhotos(next);
       })
       .catch(() => {
         if (!cancelled) setPhotos({});
