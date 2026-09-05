@@ -1,30 +1,19 @@
-import { useMemo, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { CharacterAvatar } from "./components/CharacterAvatar";
 import { TypeLegend } from "./components/TypeLegend";
 import { ZoomControls } from "./components/ZoomControls";
-import { useForceGraph } from "./lib/forceLayout";
-import {
-  edgeColor,
-  edgeDash,
-  edgeDistance,
-  edgeOpacity,
-  edgeWidth,
-  nodeRadius,
-} from "./lib/encode";
+import { edgeColor, edgeDash, edgeOpacity, edgeWidth, nodeRadius } from "./lib/encode";
 import { usePanZoom } from "./lib/usePanZoom";
 import { RELATIONSHIP_TYPE_LABEL } from "./lib/relationshipType";
 import { theme } from "./lib/theme";
-import { frameAt, hasAppeared, isAlive, typeAt, valueAt } from "./lib/timeline";
+import { isAlive, typeAt, valueAt } from "./lib/timeline";
 import { useSeriesCast } from "./lib/useSeriesCast";
 import { useWindowSize } from "./lib/useWindowSize";
 import type { Series } from "./types";
-import { TypeTag } from "./features/RelationshipMap/TypeTag";
-import { MiniBar } from "./features/RelationshipMap/MiniBar";
+import { CharacterPanel } from "./features/RelationshipMap/CharacterPanel";
 import { PulseRing } from "./features/RelationshipMap/PulseRing";
-import {
-  closeButtonStyle,
-  RelationshipPanel,
-} from "./features/RelationshipMap/RelationshipPanel";
+import { RelationshipPanel } from "./features/RelationshipMap/RelationshipPanel";
+import { useRelationshipMapState } from "./features/RelationshipMap/useRelationshipMapState";
 
 /**
  * One big force graph with a bottom scrubber you drag continuously across
@@ -34,71 +23,31 @@ export function RelationshipMap({ series }: { series: Series }) {
   const { characters, relationships, seasonCount } = series;
   const size = useWindowSize();
   const [t, setT] = useState(1);
-  const [selected, setSelected] = useState<string | null>(null);
   const [hovered, setHovered] = useState<string | null>(null);
-  const [selectedRel, setSelectedRel] = useState<string | null>(null);
   const { photos, loading: photosLoading } = useSeriesCast(series);
   const svgRef = useRef<SVGSVGElement | null>(null);
   const { transform, zoomIn, zoomOut, reset: resetZoom } = usePanZoom(svgRef);
 
-  const nodeIds = useMemo(() => characters.map((c) => c.id), [characters]);
-  const linkDefs = useMemo(
-    () =>
-      relationships.map((r) => ({
-        id: r.id,
-        source: r.source,
-        target: r.target,
-      })),
-    [relationships],
-  );
-
-  const frames = useMemo(() => {
-    const map: Record<string, ReturnType<typeof frameAt>> = {};
-    for (const r of relationships) map[r.id] = frameAt(r.seasons, t);
-    return map;
-  }, [relationships, t]);
-
-  const distances = useMemo(() => {
-    const map: Record<string, number> = {};
-    for (const r of relationships) map[r.id] = edgeDistance(frames[r.id]);
-    return map;
-  }, [relationships, frames]);
-
-  const positions = useForceGraph(nodeIds, linkDefs, distances, size);
-
-  const presentIds = useMemo(() => {
-    const ids = new Set<string>();
-    for (const c of characters)
-      if (hasAppeared(c.firstSeason, t)) ids.add(c.id);
-    return ids;
-  }, [characters, t]);
-
-  const relatedIds = useMemo(() => {
-    if (!selected) return null;
-    const ids = new Set<string>([selected]);
-    for (const r of relationships) {
-      if (r.source === selected) ids.add(r.target);
-      if (r.target === selected) ids.add(r.source);
-    }
-    return ids;
-  }, [selected, relationships]);
-
-  const selectedChar = characters.find((c) => c.id === selected) ?? null;
-  const selectedRels = selectedChar
-    ? relationships.filter(
-        (r) => r.source === selectedChar.id || r.target === selectedChar.id,
-      )
-    : [];
-  const relDetail = relationships.find((r) => r.id === selectedRel) ?? null;
-
-  function openCharacter(id: string) {
-    setSelected(id);
-    setSelectedRel(null);
-  }
-
-  function openRelationship(id: string) {
-    setSelectedRel(id);
-  }
+  const {
+    positions,
+    presentIds,
+    relatedIds,
+    frames,
+    selected,
+    selectedRel,
+    selectedChar,
+    selectedCharAlive,
+    selectedCharProminence,
+    selectedRelRows,
+    relDetail,
+    relDetailFrame,
+    relDetailType,
+    openCharacter,
+    openRelationship,
+    closeCharacterPanel,
+    closeRelationshipPanel,
+    closeAllPanels,
+  } = useRelationshipMapState(series, t, size);
 
   return (
     <div
@@ -316,169 +265,27 @@ export function RelationshipMap({ series }: { series: Series }) {
 
       <TypeLegend />
 
-      {relDetail ? (
+      {relDetail && relDetailFrame && relDetailType ? (
         <RelationshipPanel
           rel={relDetail}
-          frame={frames[relDetail.id]}
-          type={typeAt(relDetail, t)}
+          frame={relDetailFrame}
+          type={relDetailType}
           characters={characters}
           photos={photos}
-          onBack={selected ? () => setSelectedRel(null) : undefined}
-          onClose={() => {
-            setSelectedRel(null);
-            setSelected(null);
-          }}
+          onBack={selected ? closeRelationshipPanel : undefined}
+          onClose={closeAllPanels}
         />
       ) : (
         selectedChar && (
-          <div
-            style={{
-              position: "fixed",
-              top: 0,
-              right: 0,
-              bottom: 0,
-              width: 300,
-              zIndex: 950,
-              background: theme.panel,
-              backdropFilter: "blur(10px)",
-              color: theme.text,
-              padding: 20,
-              fontFamily: theme.fontUI,
-              overflowY: "auto",
-              borderLeft: `1px solid ${theme.panelBorder}`,
-              boxShadow: "-16px 0 40px rgba(0,0,0,0.4)",
-            }}
-          >
-            <button onClick={() => setSelected(null)} style={closeButtonStyle}>
-              ✕ close
-            </button>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 14,
-                marginBottom: 10,
-              }}
-            >
-              <svg width={72} height={72}>
-                <g transform="translate(36,36)">
-                  <CharacterAvatar
-                    character={selectedChar}
-                    radius={35}
-                    photoUrl={photos[selectedChar.id]}
-                  />
-                </g>
-              </svg>
-              <div>
-                <h2
-                  style={{
-                    margin: 0,
-                    fontFamily: theme.fontDisplay,
-                    fontWeight: 600,
-                    fontSize: 22,
-                  }}
-                >
-                  {selectedChar.name}
-                </h2>
-                <div style={{ fontSize: 12, color: theme.textMuted }}>
-                  House {selectedChar.house}
-                </div>
-              </div>
-            </div>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 6,
-                fontSize: 11,
-                marginBottom: 12,
-              }}
-            >
-              <span
-                style={{
-                  width: 7,
-                  height: 7,
-                  borderRadius: "50%",
-                  background: isAlive(selectedChar.aliveUntil, t)
-                    ? "#4ade80"
-                    : "#6b7280",
-                  flexShrink: 0,
-                }}
-              />
-              <span style={{ color: theme.textMuted }}>
-                {isAlive(selectedChar.aliveUntil, t)
-                  ? "Alive"
-                  : `Deceased — last seen Season ${selectedChar.aliveUntil}`}
-              </span>
-            </div>
-            <p
-              style={{
-                margin: "0 0 14px",
-                fontFamily: theme.fontDisplay,
-                fontStyle: "italic",
-                fontSize: 14,
-                lineHeight: 1.55,
-                color: theme.text,
-                opacity: 0.9,
-              }}
-            >
-              {selectedChar.bio}
-            </p>
-            <MiniBar
-              label="importance"
-              value={Math.round(valueAt(selectedChar.prominence, t))}
-            />
-            <div
-              style={{
-                color: theme.accent,
-                fontSize: 10,
-                textTransform: "uppercase",
-                letterSpacing: 0.6,
-                margin: "20px 0 4px",
-              }}
-            >
-              Relationships
-            </div>
-            {selectedRels.map((r) => {
-              const other = characters.find(
-                (c) =>
-                  c.id === (r.source === selectedChar.id ? r.target : r.source),
-              )!;
-              const frame = frames[r.id];
-              return (
-                <button
-                  key={r.id}
-                  onClick={() => openRelationship(r.id)}
-                  style={{
-                    display: "block",
-                    width: "100%",
-                    textAlign: "left",
-                    background: "none",
-                    border: "none",
-                    borderTop: `1px solid ${theme.hairline}`,
-                    color: "inherit",
-                    cursor: "pointer",
-                    padding: "10px 0",
-                  }}
-                >
-                  <div
-                    style={{
-                      fontFamily: theme.fontDisplay,
-                      fontSize: 16,
-                      marginBottom: 4,
-                    }}
-                  >
-                    {other.name}
-                  </div>
-                  <TypeTag type={typeAt(r, t)} label={r.label} />
-                  <MiniBar label="trust" value={frame.trust} />
-                  <MiniBar label="affection" value={frame.affection} />
-                  <MiniBar label="power" value={frame.power} />
-                  <MiniBar label="tension" value={frame.tension} />
-                </button>
-              );
-            })}
-          </div>
+          <CharacterPanel
+            character={selectedChar}
+            alive={selectedCharAlive}
+            prominence={selectedCharProminence}
+            rows={selectedRelRows}
+            photos={photos}
+            onSelectRelationship={openRelationship}
+            onClose={closeCharacterPanel}
+          />
         )
       )}
 

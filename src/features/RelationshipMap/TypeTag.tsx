@@ -2,8 +2,9 @@ import {
   RELATIONSHIP_TYPE_COLOR,
   RELATIONSHIP_TYPE_LABEL,
 } from "../../lib/relationshipType";
-import { theme } from "../../lib/theme";
 import type { Relationship } from "../../types";
+
+import styles from "./TypeTag.module.css";
 
 interface TypeTagProps {
   type: Relationship["type"];
@@ -11,28 +12,14 @@ interface TypeTagProps {
 }
 export const TypeTag = ({ type, label }: TypeTagProps) => {
   return (
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        gap: 6,
-        fontSize: 11,
-        color: theme.textMuted,
-        marginBottom: 6,
-      }}
-    >
+    <div className={styles.tagContainer}>
       <span
-        style={{
-          width: 8,
-          height: 8,
-          borderRadius: "50%",
-          background: RELATIONSHIP_TYPE_COLOR[type],
-          flexShrink: 0,
-        }}
+        className={styles.tagDot}
+        style={{ background: RELATIONSHIP_TYPE_COLOR[type] }}
       />
       <span>
         {label}{" "}
-        <span style={{ color: theme.textFaint }}>
+        <span className={styles.tagLabel}>
           · {RELATIONSHIP_TYPE_LABEL[type]}
         </span>
       </span>

@@ -7,6 +7,7 @@ import { theme } from "../../lib/theme";
 import type { frameAt } from "../../lib/timeline";
 import type { Character, Relationship } from "../../types";
 import { MiniBar } from "./MiniBar";
+import { closeButtonStyle } from "./styles";
 
 interface RelationshipPanelProps {
   rel: Relationship;
@@ -17,17 +18,6 @@ interface RelationshipPanelProps {
   onBack?: () => void;
   onClose: () => void;
 }
-
-export const closeButtonStyle = {
-  background: "none",
-  border: "none",
-  color: theme.textMuted,
-  cursor: "pointer",
-  marginBottom: 12,
-  fontFamily: theme.fontUI,
-  fontSize: 12,
-  padding: 0,
-};
 
 export const RelationshipPanel = ({
   rel,

@@ -1,6 +1,11 @@
 :root {
   color-scheme: dark;
   font-family: 'Nunito', system-ui, 'Segoe UI', Roboto, sans-serif;
+
+  /* mirrors src/lib/theme.ts — inline styles use theme.* directly, CSS
+     modules use these instead, since a CSS file can't import a TS object */
+  --text-sm: 11px;
+  --text-muted: rgba(242, 238, 248, 0.6);
 }
 
 body {
