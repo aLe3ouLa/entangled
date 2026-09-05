@@ -1,7 +1,7 @@
 import { CharacterAvatar } from "../../components/CharacterAvatar";
 import { theme } from "../../lib/theme";
 import type { Character } from "../../types";
-import { MiniBar } from "./MiniBar";
+import { Bar } from "./Bar";
 import { closeButtonStyle } from "./styles";
 import { TypeTag } from "./TypeTag";
 import type { RelationshipRow } from "./useRelationshipMapState";
@@ -117,7 +117,7 @@ export function CharacterPanel({
       >
         {character.bio}
       </p>
-      <MiniBar label="importance" value={prominence} />
+      <Bar label="importance" value={prominence} />
       <div
         style={{
           color: theme.accent,
@@ -155,10 +155,10 @@ export function CharacterPanel({
             {other.name}
           </div>
           <TypeTag type={type} label={rel.label} />
-          <MiniBar label="trust" value={frame.trust} />
-          <MiniBar label="affection" value={frame.affection} />
-          <MiniBar label="power" value={frame.power} />
-          <MiniBar label="tension" value={frame.tension} />
+          <Bar label="trust" value={frame.trust} />
+          <Bar label="affection" value={frame.affection} />
+          <Bar label="power" value={frame.power} />
+          <Bar label="tension" value={frame.tension} />
         </button>
       ))}
     </div>

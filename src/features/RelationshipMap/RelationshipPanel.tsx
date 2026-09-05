@@ -6,7 +6,7 @@ import {
 import { theme } from "../../lib/theme";
 import type { frameAt } from "../../lib/timeline";
 import type { Character, Relationship } from "../../types";
-import { MiniBar } from "./MiniBar";
+import { Bar } from "./Bar";
 import { closeButtonStyle } from "./styles";
 
 interface RelationshipPanelProps {
@@ -124,10 +124,10 @@ export const RelationshipPanel = ({
       >
         {rel.summary}
       </p>
-      <MiniBar label="trust" value={frame.trust} />
-      <MiniBar label="affection" value={frame.affection} />
-      <MiniBar label="power" value={frame.power} />
-      <MiniBar label="tension" value={frame.tension} />
+      <Bar label="trust" value={frame.trust} />
+      <Bar label="affection" value={frame.affection} />
+      <Bar label="power" value={frame.power} />
+      <Bar label="tension" value={frame.tension} />
     </div>
   );
 };

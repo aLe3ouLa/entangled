@@ -1,11 +1,11 @@
-import styles from "./MiniBar.module.css";
+import styles from "./Bar.module.css";
 
-interface MiniBarProps {
+interface BarProps {
   label: string;
   value: number;
 }
 
-export const MiniBar = ({ label, value }: MiniBarProps) => {
+export const Bar = ({ label, value }: BarProps) => {
   return (
     <div className={styles.barContainer}>
       <span className={styles.barLabel}>{label}</span>
