@@ -1,19 +1,22 @@
-import { useEffect, useState } from 'react';
-import { Pill } from './components/Pill';
-import { FamilyTreeView } from './FamilyTree';
-import { RelationshipMap } from './RelationshipMap';
-import { SERIES } from './data/series';
-import { theme } from './lib/theme';
+import { useEffect, useState } from "react";
+import { Pill } from "./components/Pill";
+import { FamilyTreeView } from "./FamilyTree";
+import { RelationshipMap } from "./RelationshipMap";
+import { SERIES } from "./data/series";
+import { theme } from "./lib/theme";
 
-type View = 'relationships' | 'family-tree';
+type View = "relationships" | "family-tree";
 
 function initialSeriesId(): string {
-  const param = new URLSearchParams(window.location.search).get('series');
+  const param = new URLSearchParams(window.location.search).get("series");
   return SERIES.some((s) => s.id === param) ? param! : SERIES[0].id;
 }
 
 function initialView(): View {
-  return new URLSearchParams(window.location.search).get('view') === 'family-tree' ? 'family-tree' : 'relationships';
+  return new URLSearchParams(window.location.search).get("view") ===
+    "family-tree"
+    ? "family-tree"
+    : "relationships";
 }
 
 export default function App() {
@@ -21,31 +24,50 @@ export default function App() {
   const [view, setView] = useState<View>(initialView);
   const series = SERIES.find((s) => s.id === seriesId)!;
 
-  // keeps the URL live (shareable at any point) without adding history entries —
-  // this is tab-switching, not page navigation, so the back button shouldn't
-  // have to step through every pill click to leave the app
   useEffect(() => {
     const url = new URL(window.location.href);
-    url.searchParams.set('series', seriesId);
-    url.searchParams.set('view', view);
-    window.history.replaceState(null, '', url);
+    url.searchParams.set("series", seriesId);
+    url.searchParams.set("view", view);
+    window.history.replaceState(null, "", url);
   }, [seriesId, view]);
 
   return (
     <>
-      <div style={{ position: 'fixed', bottom: 16, left: 16, display: 'flex', gap: 8, zIndex: 1000 }}>
+      <div
+        style={{
+          position: "fixed",
+          bottom: 16,
+          left: 16,
+          display: "flex",
+          gap: 8,
+          zIndex: 1000,
+        }}
+      >
         {SERIES.map((s) => (
-          <Pill key={s.id} active={s.id === seriesId} onClick={() => setSeriesId(s.id)}>
+          <Pill
+            key={s.id}
+            active={s.id === seriesId}
+            onClick={() => setSeriesId(s.id)}
+          >
             {s.title}
           </Pill>
         ))}
       </div>
 
-      <div style={{ position: 'fixed', bottom: 16, right: 16, display: 'flex', gap: 8, zIndex: 1000 }}>
+      <div
+        style={{
+          position: "fixed",
+          bottom: 16,
+          right: 16,
+          display: "flex",
+          gap: 8,
+          zIndex: 1000,
+        }}
+      >
         {(
           [
-            ['relationships', 'Relationships'],
-            ['family-tree', 'Family Tree'],
+            ["relationships", "Relationships"],
+            ["family-tree", "Family Tree"],
           ] as const
         ).map(([key, label]) => (
           <Pill key={key} active={view === key} onClick={() => setView(key)}>
@@ -56,16 +78,15 @@ export default function App() {
 
       <div
         style={{
-          position: 'fixed',
+          position: "fixed",
           inset: 0,
           background: theme.bgVignette,
-          pointerEvents: 'none',
+          pointerEvents: "none",
           zIndex: 0,
         }}
       />
 
-      {/* key remounts on series/view switch so force-sim and measured-layout state never leak across shows */}
-      {view === 'relationships' ? (
+      {view === "relationships" ? (
         <RelationshipMap key={series.id} series={series} />
       ) : (
         <FamilyTreeView key={series.id} series={series} />

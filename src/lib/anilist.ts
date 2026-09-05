@@ -1,13 +1,11 @@
-// AniList's API is public and keyless — no credentials needed, unlike TMDb.
-// Used for anime series, where a "cast photo" should be the character's own
-// official art, not the voice actor's face (which is what TMDb would give us).
+// AniList's API
+// Used for anime series, where a "cast photo" should be the character's own official art.
 
-const ENDPOINT = 'https://graphql.anilist.co';
+const ENDPOINT = "https://graphql.anilist.co";
 
 export interface AnilistCharacter {
   characterName: string;
   imageUrl: string | null;
-  /** array position — the query is sorted by role (MAIN before SUPPORTING), so lower is more prominent */
   order: number;
 }
 
@@ -36,14 +34,17 @@ interface AnilistResponse {
 
 const cache = new Map<string, AnilistCharacter[]>();
 
-export async function getAnilistCharacters(title: string): Promise<AnilistCharacter[]> {
-  if (cache.has(title)) return cache.get(title)!;
+export async function getAnilistCharacters(
+  title: string,
+): Promise<AnilistCharacter[]> {
+  if (title && cache.has(title)) return cache.get(title) ?? [];
 
   const res = await fetch(ENDPOINT, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+    method: "POST",
+    headers: { "Content-Type": "application/json", Accept: "application/json" },
     body: JSON.stringify({ query: QUERY, variables: { search: title } }),
   });
+
   if (!res.ok) {
     cache.set(title, []);
     return [];
@@ -52,8 +53,12 @@ export async function getAnilistCharacters(title: string): Promise<AnilistCharac
   const json = (await res.json()) as AnilistResponse;
   const nodes = json.data?.Media?.characters?.nodes ?? [];
   const characters: AnilistCharacter[] = nodes
-    .filter((n) => n.name?.full)
-    .map((n, i) => ({ characterName: n.name!.full!, imageUrl: n.image?.large ?? null, order: i }));
+    .filter((character) => character.name?.full)
+    .map((character, index) => ({
+      characterName: character.name!.full!,
+      imageUrl: character.image?.large ?? null,
+      order: index,
+    }));
 
   cache.set(title, characters);
   return characters;

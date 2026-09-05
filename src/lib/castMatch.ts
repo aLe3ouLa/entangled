@@ -1,16 +1,19 @@
-const DIACRITICS = new RegExp('[' + String.fromCharCode(0x0300) + '-' + String.fromCharCode(0x036f) + ']', 'g');
+const DIACRITICS = new RegExp(
+  "[" + String.fromCharCode(0x0300) + "-" + String.fromCharCode(0x036f) + "]",
+  "g",
+);
 
 function normalize(s: string): string {
   return s
     .toLowerCase()
-    .normalize('NFD')
-    .replace(DIACRITICS, '')
-    .replace(/[^a-z0-9]+/g, ' ')
+    .normalize("NFD")
+    .replace(DIACRITICS, "")
+    .replace(/[^a-z0-9]+/g, " ")
     .trim();
 }
 
 function tokens(s: string): string[] {
-  return normalize(s).split(' ').filter(Boolean);
+  return normalize(s).split(" ").filter(Boolean);
 }
 
 /**
@@ -25,10 +28,9 @@ function tokens(s: string): string[] {
  * tiebreak once picked a "Young Ned Stark" flashback recast over the real
  * "Lord Eddard 'Ned' Stark" because it had one fewer extra word.
  */
-export function findCastMatch<T extends { characterName: string; order?: number }>(
-  cast: T[],
-  characterName: string,
-): T | undefined {
+export function findCastMatch<
+  T extends { characterName: string; order?: number },
+>(cast: T[], characterName: string): T | undefined {
   const target = normalize(characterName);
   const exact = cast.find((c) => normalize(c.characterName) === target);
   if (exact) return exact;
@@ -41,7 +43,11 @@ export function findCastMatch<T extends { characterName: string; order?: number 
     if (!isSuperset) continue;
     const order = member.order ?? Infinity;
     const extra = candidateTokens.length - targetTokens.length;
-    if (!best || order < best.order || (order === best.order && extra < best.extra)) {
+    if (
+      !best ||
+      order < best.order ||
+      (order === best.order && extra < best.extra)
+    ) {
       best = { member, order, extra };
     }
   }
