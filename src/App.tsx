@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Pill } from './components/Pill';
 import { FamilyTreeView } from './FamilyTree';
 import { RelationshipMap } from './RelationshipMap';
@@ -7,10 +7,29 @@ import { theme } from './lib/theme';
 
 type View = 'relationships' | 'family-tree';
 
+function initialSeriesId(): string {
+  const param = new URLSearchParams(window.location.search).get('series');
+  return SERIES.some((s) => s.id === param) ? param! : SERIES[0].id;
+}
+
+function initialView(): View {
+  return new URLSearchParams(window.location.search).get('view') === 'family-tree' ? 'family-tree' : 'relationships';
+}
+
 export default function App() {
-  const [seriesId, setSeriesId] = useState(SERIES[0].id);
-  const [view, setView] = useState<View>('relationships');
+  const [seriesId, setSeriesId] = useState(initialSeriesId);
+  const [view, setView] = useState<View>(initialView);
   const series = SERIES.find((s) => s.id === seriesId)!;
+
+  // keeps the URL live (shareable at any point) without adding history entries —
+  // this is tab-switching, not page navigation, so the back button shouldn't
+  // have to step through every pill click to leave the app
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    url.searchParams.set('series', seriesId);
+    url.searchParams.set('view', view);
+    window.history.replaceState(null, '', url);
+  }, [seriesId, view]);
 
   return (
     <>

@@ -1,9 +1,9 @@
 import type { Character, FamilyTree, Relationship, Series } from '../../types';
 
-// STUB — a rough first pass proving the multi-series architecture holds for a
-// very differently-shaped show (2 "parts" so far, not 8 Western-TV seasons,
-// small named cast). Trust/affection/power/tension values are a first guess,
-// not carefully researched the way the GoT data was — expand or correct freely.
+// Upgraded from an initial stub to a real second series — still lighter
+// than the GoT data (2 "parts" so far, a smaller confirmed cast, and a few
+// dynamics I'm less certain of than others are deliberately left out rather
+// than guessed), but researched rather than a first-guess placeholder.
 
 const characters: Character[] = [
   {
@@ -41,6 +41,24 @@ const characters: Character[] = [
     bio: 'A cheerful, none-too-bright serving girl in the rear palace — one of the few people Maomao treats as a genuine friend rather than a puzzle to solve.',
     aliveUntil: 2,
     prominence: [35, 35],
+  },
+  {
+    id: 'lakan',
+    name: 'Lakan',
+    house: 'Military',
+    color: '#5b6b8c',
+    bio: 'An eccentric, chess-obsessed military strategist with famously poor eyesight — few take him seriously until they learn just how sharp his mind actually is.',
+    aliveUntil: 2,
+    prominence: [30, 45],
+  },
+  {
+    id: 'gaoshun',
+    name: 'Gaoshun',
+    house: 'Outer Court',
+    color: '#9b7653',
+    bio: "Jinshi's steady, unglamorous attendant — the one who actually keeps the schemes and the household running while Jinshi gets the attention.",
+    aliveUntil: 2,
+    prominence: [25, 30],
   },
 ];
 
@@ -81,15 +99,52 @@ const relationships: Relationship[] = [
       { trust: 75, affection: 75, power: 50, tension: 15 },
     ],
   },
+  {
+    id: 'maomao-lakan',
+    source: 'maomao',
+    target: 'lakan',
+    type: 'hidden-truth',
+    label: 'The strategist who is actually her father',
+    summary: "An odd, unsettling stranger who takes a strange interest in her — one she doesn't yet know is her own biological father.",
+    seasons: [
+      { trust: 20, affection: 15, power: 60, tension: 45 },
+      { trust: 35, affection: 30, power: 55, tension: 55 },
+    ],
+  },
+  {
+    id: 'jinshi-gaoshun',
+    source: 'jinshi',
+    target: 'gaoshun',
+    type: 'loyalty',
+    label: 'The attendant who makes it all work',
+    summary: "Unglamorous, unwavering service — Gaoshun manages the practical reality behind Jinshi's schemes and standing.",
+    seasons: [
+      { trust: 85, affection: 60, power: 40, tension: 15 },
+      { trust: 88, affection: 65, power: 40, tension: 20 },
+    ],
+  },
+  {
+    id: 'jinshi-luomen',
+    source: 'jinshi',
+    target: 'luomen',
+    type: 'dependence',
+    label: 'A quiet, useful source of discretion',
+    summary: "Luomen's medical expertise and history with the palace make him someone Jinshi can consult without drawing attention.",
+    seasons: [
+      { trust: 50, affection: 35, power: 30, tension: 20 },
+      { trust: 60, affection: 40, power: 30, tension: 25 },
+    ],
+  },
 ];
 
-// Minimal on purpose — mirrors Jon Snow's "raised by one, secretly born of another"
-// pattern (Maomao's biological father isn't Luomen, revealed later in the story),
-// same as the rest of this file's data: a first pass, not deeply researched.
+// Mirrors Jon Snow's "raised by one, secretly born of another" pattern —
+// Maomao's biological father isn't Luomen, revealed later in the story.
+// The exact Luomen-Lakan relationship (I recall some family/clan tie) is
+// left out rather than guessed at.
 const familyTree: FamilyTree = {
   people: [
     { id: 'luomen', name: 'Luomen', generation: 0 },
-    { id: 'lakan', name: 'Lakan', generation: 0, color: '#5b6b8c' },
+    { id: 'lakan', name: 'Lakan', generation: 0 },
     { id: 'maomao', name: 'Maomao', generation: 1 },
   ],
   links: [
