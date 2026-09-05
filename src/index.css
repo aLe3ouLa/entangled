@@ -32,6 +32,14 @@
   --space-sm: 8px;
   --space-md: 16px;
   --space-lg: 24px;
+
+  --scrubber-bottom: 68px;
+}
+
+@media (max-width: 640px) {
+  :root {
+    --scrubber-bottom: 176px;
+  }
 }
 
 body {

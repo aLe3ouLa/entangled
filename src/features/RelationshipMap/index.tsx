@@ -298,7 +298,7 @@ export function RelationshipMap({ series }: { series: Series }) {
       <div
         style={{
           position: "fixed",
-          bottom: 68,
+          bottom: "var(--scrubber-bottom)",
           left: "50%",
           transform: "translateX(-50%)",
           width: "min(600px, 80vw)",
