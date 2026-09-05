@@ -10,7 +10,7 @@ import { theme } from "../../../../lib/theme";
 import styles from "./styles.module.css";
 
 export function Legend() {
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(true);
 
   return (
     <div className={styles.legendContainer}>
