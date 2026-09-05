@@ -1,11 +1,12 @@
 :root {
   color-scheme: dark;
-  font-family: 'Nunito', system-ui, 'Segoe UI', Roboto, sans-serif;
+  font-family: "Nunito", system-ui, "Segoe UI", Roboto, sans-serif;
 
   /* mirrors src/lib/theme.ts — inline styles use theme.* directly, CSS
      modules use these instead, since a CSS file can't import a TS object */
   --text-sm: 11px;
   --text-muted: rgba(242, 238, 248, 0.6);
+  --color-accent: #ff6fae;
 }
 
 body {
@@ -17,7 +18,7 @@ body {
   min-height: 100svh;
 }
 
-input[type='range'] {
+input[type="range"] {
   -webkit-appearance: none;
   appearance: none;
   height: 2px;
@@ -26,13 +27,13 @@ input[type='range'] {
   outline: none;
 }
 
-input[type='range']::-webkit-slider-runnable-track {
+input[type="range"]::-webkit-slider-runnable-track {
   height: 2px;
   background: rgba(255, 255, 255, 0.15);
   border-radius: 999px;
 }
 
-input[type='range']::-webkit-slider-thumb {
+input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
   width: 14px;
@@ -40,17 +41,19 @@ input[type='range']::-webkit-slider-thumb {
   margin-top: -6px;
   border-radius: 50%;
   background: #ff6fae;
-  box-shadow: 0 0 8px rgba(255, 111, 174, 0.6), 0 0 0 3px rgba(255, 111, 174, 0.15);
+  box-shadow:
+    0 0 8px rgba(255, 111, 174, 0.6),
+    0 0 0 3px rgba(255, 111, 174, 0.15);
   cursor: pointer;
 }
 
-input[type='range']::-moz-range-track {
+input[type="range"]::-moz-range-track {
   height: 2px;
   background: rgba(255, 255, 255, 0.15);
   border-radius: 999px;
 }
 
-input[type='range']::-moz-range-thumb {
+input[type="range"]::-moz-range-thumb {
   width: 14px;
   height: 14px;
   border: none;

@@ -1,0 +1,25 @@
+.barContainer {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 3px;
+}
+
+.barLabel {
+  width: 56px;
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+.barBackground {
+  flex: 1;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 2px;
+}
+
+.barFill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-accent), #ffb3d9);
+  border-radius: 2px;
+}
