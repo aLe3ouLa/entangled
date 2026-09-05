@@ -1,0 +1,32 @@
+.seriesBar,
+.viewBar {
+  position: fixed;
+  bottom: var(--space-md);
+  display: flex;
+  gap: var(--space-sm);
+  z-index: 1000;
+  flex-wrap: wrap;
+  max-width: calc(100vw - 32px);
+}
+
+.seriesBar {
+  left: var(--space-md);
+}
+
+.viewBar {
+  right: var(--space-md);
+}
+
+@media (max-width: 640px) {
+  .seriesBar,
+  .viewBar {
+    left: var(--space-md);
+    right: var(--space-md);
+    max-width: none;
+    justify-content: center;
+  }
+
+  .seriesBar {
+    bottom: 64px;
+  }
+}

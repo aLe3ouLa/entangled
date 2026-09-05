@@ -4,6 +4,7 @@ import { FamilyTreeView } from "./FamilyTree";
 import { RelationshipMap } from "./features/RelationshipMap";
 import { SERIES } from "./data/series";
 import { theme } from "./lib/theme";
+import styles from "./App.module.css";
 
 type View = "relationships" | "family-tree";
 
@@ -33,16 +34,7 @@ export default function App() {
 
   return (
     <>
-      <div
-        style={{
-          position: "fixed",
-          bottom: 16,
-          left: 16,
-          display: "flex",
-          gap: 8,
-          zIndex: 1000,
-        }}
-      >
+      <div className={styles.seriesBar}>
         {SERIES.map((s) => (
           <Pill
             key={s.id}
@@ -54,16 +46,7 @@ export default function App() {
         ))}
       </div>
 
-      <div
-        style={{
-          position: "fixed",
-          bottom: 16,
-          right: 16,
-          display: "flex",
-          gap: 8,
-          zIndex: 1000,
-        }}
-      >
+      <div className={styles.viewBar}>
         {(
           [
             ["relationships", "Relationships"],

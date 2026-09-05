@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { CharacterAvatar } from "../../components/CharacterAvatar";
-import { TypeLegend } from "../../components/TypeLegend";
+import { Legend } from "./components/Legend";
 import { ZoomControls } from "../../components/ZoomControls";
 import {
   edgeColor,
@@ -269,7 +269,7 @@ export function RelationshipMap({ series }: { series: Series }) {
         )}
       </div>
 
-      <TypeLegend />
+      <Legend />
 
       {relDetail && relDetailFrame && relDetailType ? (
         <RelationshipPanel
