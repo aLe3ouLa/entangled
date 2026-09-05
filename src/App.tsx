@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Pill } from "./components/Pill";
+import { SeriesMenu } from "./components/SeriesMenu";
 import { FamilyTreeView } from "./FamilyTree";
 import { RelationshipMap } from "./features/RelationshipMap";
 import { SERIES } from "./data/series";
@@ -35,15 +36,7 @@ export default function App() {
   return (
     <>
       <div className={styles.seriesBar}>
-        {SERIES.map((s) => (
-          <Pill
-            key={s.id}
-            active={s.id === seriesId}
-            onClick={() => setSeriesId(s.id)}
-          >
-            {s.title}
-          </Pill>
-        ))}
+        <SeriesMenu series={SERIES} activeId={seriesId} onSelect={setSeriesId} />
       </div>
 
       <div className={styles.viewBar}>
