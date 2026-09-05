@@ -19,6 +19,7 @@ export function RelationshipMap({ series }: { series: Series }) {
   const size = useWindowSize();
   const [t, setT] = useState(1);
   const [selected, setSelected] = useState<string | null>(null);
+  const [hovered, setHovered] = useState<string | null>(null);
   const [selectedRel, setSelectedRel] = useState<string | null>(null);
   const { photos, loading: photosLoading } = useSeriesCast(series);
 
@@ -97,16 +98,22 @@ export function RelationshipMap({ series }: { series: Series }) {
           const p = positions[c.id];
           if (!p) return null;
           const alive = isAlive(c.aliveUntil, t);
-          const radius = nodeRadius(valueAt(c.prominence, t)) + (selected === c.id ? 4 : 0);
+          const isSelected = selected === c.id;
+          const isHovered = hovered === c.id;
+          const radius = nodeRadius(valueAt(c.prominence, t)) + (isSelected ? 4 : 0);
           return (
             <g
               key={c.id}
               transform={`translate(${p.x},${p.y})`}
               onClick={() => openCharacter(c.id)}
+              onMouseEnter={() => setHovered(c.id)}
+              onMouseLeave={() => setHovered((h) => (h === c.id ? null : h))}
               style={{ cursor: 'pointer' }}
               opacity={alive ? 1 : 0.25}
             >
-              <CharacterAvatar character={c} radius={radius} highlight={selected === c.id} photoUrl={photos[c.id]} />
+              {isSelected && <PulseRing radius={radius} amplitude={16} duration="1.6s" peakOpacity={0.6} />}
+              {!isSelected && isHovered && <PulseRing radius={radius} amplitude={6} duration="1s" peakOpacity={0.35} />}
+              <CharacterAvatar character={c} radius={radius} highlight={isSelected} photoUrl={photos[c.id]} />
               <text
                 y={radius + 15}
                 textAnchor="middle"
@@ -204,17 +211,19 @@ export function RelationshipMap({ series }: { series: Series }) {
             <button onClick={() => setSelected(null)} style={closeButtonStyle}>
               ✕ close
             </button>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
-              <svg width={48} height={48}>
-                <g transform="translate(24,24)">
-                  <CharacterAvatar character={selectedChar} radius={24} photoUrl={photos[selectedChar.id]} />
+            <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 14 }}>
+              <svg width={72} height={72}>
+                <g transform="translate(36,36)">
+                  <CharacterAvatar character={selectedChar} radius={35} photoUrl={photos[selectedChar.id]} />
                 </g>
               </svg>
               <div>
-                <h2 style={{ margin: 0, fontFamily: theme.fontDisplay, fontWeight: 600, fontSize: 20 }}>{selectedChar.name}</h2>
+                <h2 style={{ margin: 0, fontFamily: theme.fontDisplay, fontWeight: 600, fontSize: 22 }}>{selectedChar.name}</h2>
                 <div style={{ fontSize: 12, color: theme.textMuted }}>House {selectedChar.house}</div>
               </div>
             </div>
+            <MiniBar label="importance" value={Math.round(valueAt(selectedChar.prominence, t))} />
+            <div style={{ marginBottom: 16 }} />
             {selectedRels.map((r) => {
               const other = characters.find((c) => c.id === (r.source === selectedChar.id ? r.target : r.source))!;
               const frame = frames[r.id];
@@ -279,6 +288,25 @@ export function RelationshipMap({ series }: { series: Series }) {
         </div>
       </div>
     </div>
+  );
+}
+
+function PulseRing({
+  radius,
+  amplitude,
+  duration,
+  peakOpacity,
+}: {
+  radius: number;
+  amplitude: number;
+  duration: string;
+  peakOpacity: number;
+}) {
+  return (
+    <circle r={radius} fill="none" stroke={theme.accent} strokeWidth={2}>
+      <animate attributeName="r" values={`${radius};${radius + amplitude};${radius}`} dur={duration} repeatCount="indefinite" />
+      <animate attributeName="opacity" values={`${peakOpacity};0;${peakOpacity}`} dur={duration} repeatCount="indefinite" />
+    </circle>
   );
 }
 
