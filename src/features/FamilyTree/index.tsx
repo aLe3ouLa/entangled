@@ -2,7 +2,7 @@ import { useLayoutEffect, useRef, useState } from "react";
 import { RELATIONSHIP_TYPE_COLOR } from "../../lib/relationshipType";
 import { theme } from "../../lib/theme";
 import { useFamilyPhotos } from "../../lib/useFamilyPhotos";
-import { useWindowSize } from "../../lib/useWindowSize";
+import { useWindowSize } from "../../hooks/useWindowSize";
 import type { FamilyLinkKind, Series } from "../../types";
 import { PersonNode } from "./components/PersonNode";
 

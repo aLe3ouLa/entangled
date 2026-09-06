@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
-import type { Series } from '../types';
-import { isArtAvailable, resolvePhotos } from './resolveArt';
+import { useEffect, useState } from "react";
 
-/** character id -> real photo/art URL, or null if unmatched/unavailable */
+import type { Series } from "../types";
+
+import { isArtAvailable, resolvePhotos } from "../lib/resolveArt";
+
 export function useSeriesCast(series: Series) {
   const [photos, setPhotos] = useState<Record<string, string | null>>({});
   const [loading, setLoading] = useState(false);
@@ -10,20 +11,31 @@ export function useSeriesCast(series: Series) {
   useEffect(() => {
     if (!isArtAvailable(series)) {
       setPhotos({});
+      setLoading(false);
       return;
     }
+
     let cancelled = false;
+
     setLoading(true);
+
     resolvePhotos(series, series.characters)
       .then((next) => {
-        if (!cancelled) setPhotos(next);
+        if (!cancelled) {
+          setPhotos(next);
+        }
       })
       .catch(() => {
-        if (!cancelled) setPhotos({});
+        if (!cancelled) {
+          setPhotos({});
+        }
       })
       .finally(() => {
-        if (!cancelled) setLoading(false);
+        if (!cancelled) {
+          setLoading(false);
+        }
       });
+
     return () => {
       cancelled = true;
     };

@@ -9,12 +9,12 @@ import {
   edgeWidth,
   nodeRadius,
 } from "../../lib/encode";
-import { usePanZoom } from "../../lib/usePanZoom";
+import { usePanZoom } from "../../hooks/usePanZoom";
 import { RELATIONSHIP_TYPE_LABEL } from "../../lib/relationshipType";
 import { theme } from "../../lib/theme";
 import { isAlive, typeAt, valueAt } from "../../lib/timeline";
-import { useSeriesCast } from "../../lib/useSeriesCast";
-import { useWindowSize } from "../../lib/useWindowSize";
+import { useSeriesCast } from "../../hooks/useSeriesCast";
+import { useWindowSize } from "../../hooks/useWindowSize";
 import type { Series } from "../../types";
 import { CharacterPanel } from "./components/CharacterPanel";
 import { PulseRing } from "./components/PulseRing";
