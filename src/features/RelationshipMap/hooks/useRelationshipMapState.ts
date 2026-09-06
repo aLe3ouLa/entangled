@@ -9,12 +9,12 @@ import {
   valueAt,
 } from "../../../lib/timeline";
 import type {
-  Character,
   Relationship,
   RelationshipFrame,
   RelationshipType,
   Series,
 } from "../../../types";
+import type { Character } from "@/components/Character/types";
 
 export interface RelationshipRow {
   rel: Relationship;
