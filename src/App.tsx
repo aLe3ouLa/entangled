@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { Pill } from "./components/Pill";
 import { SeriesMenu } from "./components/SeriesMenu";
-import { FamilyTreeView } from "./FamilyTree";
+import { FamilyTreeView } from "./features/FamilyTree";
 import { RelationshipMap } from "./features/RelationshipMap";
 import { SERIES } from "./data/series";
-import { theme } from "./lib/theme";
+
 import styles from "./App.module.css";
 
 type View = "relationships" | "family-tree";
@@ -36,7 +36,11 @@ export default function App() {
   return (
     <>
       <div className={styles.seriesBar}>
-        <SeriesMenu series={SERIES} activeId={seriesId} onSelect={setSeriesId} />
+        <SeriesMenu
+          series={SERIES}
+          activeId={seriesId}
+          onSelect={setSeriesId}
+        />
       </div>
 
       <div className={styles.viewBar}>
@@ -52,15 +56,7 @@ export default function App() {
         ))}
       </div>
 
-      <div
-        style={{
-          position: "fixed",
-          inset: 0,
-          background: theme.bgVignette,
-          pointerEvents: "none",
-          zIndex: 0,
-        }}
-      />
+      <div className={styles.viewContainer} />
 
       {view === "relationships" ? (
         <RelationshipMap key={series.id} series={series} />

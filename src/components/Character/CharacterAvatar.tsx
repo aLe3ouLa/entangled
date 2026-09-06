@@ -1,6 +1,8 @@
-import { avatarUrl } from "../lib/avatar";
-import { theme } from "../lib/theme";
-import type { Character } from "../types";
+import { avatarUrl } from "../../lib/avatar";
+import { theme } from "../../lib/theme";
+import type { Character } from "./types";
+
+import style from "./styles.module.css";
 
 interface Props {
   character: Character;
@@ -17,7 +19,7 @@ export function CharacterAvatar({
 }: Props) {
   const clipId = `avatar-clip-${character.id}`;
   return (
-    <g style={{ filter: "drop-shadow(0 2px 6px rgba(0,0,0,0.55))" }}>
+    <g className={style.avatar}>
       <clipPath id={clipId}>
         <circle r={radius} />
       </clipPath>

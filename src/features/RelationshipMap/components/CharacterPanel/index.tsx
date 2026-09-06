@@ -1,5 +1,4 @@
-import { AvatarIcon } from "../../../../components/AvatarIcon";
-import type { Character } from "../../../../types";
+import { AvatarIcon } from "../../../../components/Character/AvatarIcon";
 import { Bar } from "../Bar";
 import { PanelCloseButton } from "../PanelCloseButton";
 import { TypeTag } from "../TypeTag";
@@ -7,6 +6,7 @@ import type { RelationshipRow } from "../../hooks/useRelationshipMapState";
 
 import style from "./styles.module.css";
 import { Dot } from "../Dot";
+import type { Character } from "@/components/Character/types";
 
 interface CharacterPanelProps {
   character: Character;

@@ -1,5 +1,5 @@
+import type { Character } from "@/components/Character/types";
 import type {
-  Character,
   FamilyTree,
   Relationship,
   RelationshipFrame,

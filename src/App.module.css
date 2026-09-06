@@ -17,6 +17,14 @@
   right: var(--space-md);
 }
 
+.viewContainer {
+  position: fixed;
+  inset: 0;
+  background: var(--bg-vignette);
+  pointer-events: none;
+  z-index: 0;
+}
+
 @media (max-width: 640px) {
   .seriesBar,
   .viewBar {
