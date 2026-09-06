@@ -1,11 +1,18 @@
-import type { Relationship, RelationshipFrame, RelationshipType } from '../types';
+import type {
+  Relationship,
+  RelationshipFrame,
+  RelationshipType,
+} from "../types";
 
 function lerp(a: number, b: number, t: number) {
   return a + (b - a) * t;
 }
 
 /** t is a continuous season position in [1, seasons.length] */
-export function frameAt(seasons: RelationshipFrame[], t: number): RelationshipFrame {
+export function frameAt(
+  seasons: RelationshipFrame[],
+  t: number,
+): RelationshipFrame {
   const clamped = Math.min(Math.max(t, 1), seasons.length);
   const idx = clamped - 1;
   const lo = Math.floor(idx);
@@ -22,7 +29,10 @@ export function frameAt(seasons: RelationshipFrame[], t: number): RelationshipFr
 }
 
 /** snaps to the nearest whole season, no interpolation */
-export function discreteFrame(seasons: RelationshipFrame[], season: number): RelationshipFrame {
+export function discreteFrame(
+  seasons: RelationshipFrame[],
+  season: number,
+): RelationshipFrame {
   const idx = Math.min(Math.max(Math.round(season) - 1, 0), seasons.length - 1);
   return seasons[idx];
 }
@@ -48,7 +58,10 @@ export function isAlive(aliveUntil: number, season: number): boolean {
 
 /** whether a character has been introduced yet at this point in the timeline —
  *  firstSeason defaults to 1 (present from the start) when omitted */
-export function hasAppeared(firstSeason: number | undefined, season: number): boolean {
+export function hasAppeared(
+  firstSeason: number | undefined,
+  season: number,
+): boolean {
   return Math.round(season) >= (firstSeason ?? 1);
 }
 

@@ -1,10 +1,11 @@
 import { useLayoutEffect, useRef, useState } from "react";
 import { RELATIONSHIP_TYPE_COLOR } from "../../lib/relationshipType";
 import { theme } from "../../lib/theme";
-import { useFamilyPhotos } from "../../lib/useFamilyPhotos";
+import { useFamilyPhotos } from "../../hooks/useFamilyPhotos";
 import { useWindowSize } from "../../hooks/useWindowSize";
 import type { FamilyLinkKind, Series } from "../../types";
 import { PersonNode } from "./components/PersonNode";
+import { EmptyState } from "@/components/EmptyState";
 
 function lineStyle(kind: FamilyLinkKind): { stroke: string; dash?: string } {
   if (kind === "secret-parent")
@@ -82,22 +83,7 @@ export function FamilyTreeView({ series }: { series: Series }) {
   }, [tree, photos, size]);
 
   if (!tree) {
-    return (
-      <div
-        style={{
-          position: "fixed",
-          inset: 0,
-          background: theme.bg,
-          color: theme.textMuted,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          fontFamily: theme.fontUI,
-        }}
-      >
-        No family tree data for this series yet.
-      </div>
-    );
+    return <EmptyState />;
   }
 
   const connectedIds = new Set<string>();

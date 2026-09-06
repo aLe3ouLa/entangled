@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import type { Series } from "../types";
-import { isArtAvailable, resolvePhotos } from "./resolveArt";
+import { isArtAvailable, resolvePhotos } from "../lib/resolveArt";
 
 /** photo lookup for family-tree people — includes tree-only ancestors who
  *  aren't part of the scored relationship graph, matched the same way */
