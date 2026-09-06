@@ -1,16 +1,17 @@
-import { AvatarIcon } from "../../../../components/AvatarIcon";
+import { AvatarIcon } from "../../../../components/Character/AvatarIcon";
 import {
   RELATIONSHIP_TYPE_COLOR,
   RELATIONSHIP_TYPE_LABEL,
 } from "@/lib/relationshipType";
 import { theme } from "../../../../lib/theme";
 import type { frameAt } from "../../../../lib/timeline";
-import type { Character, Relationship } from "../../../../types";
+import type { Relationship } from "../../../../types";
 import { Bar } from "../Bar";
 import { PanelCloseButton } from "../PanelCloseButton";
 
 import styles from "./styles.module.css";
 import { Dot } from "../Dot";
+import type { Character } from "@/components/Character/types";
 
 interface RelationshipPanelProps {
   rel: Relationship;

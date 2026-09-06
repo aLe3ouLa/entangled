@@ -1,4 +1,5 @@
-import type { Character, FamilyTree, Relationship, Series } from "../../types";
+import type { Character } from "@/components/Character/types";
+import type { FamilyTree, Relationship, Series } from "../../types";
 
 // Upgraded from an initial stub to a real second series — still lighter
 // than the GoT data (2 "parts" so far, a smaller confirmed cast, and a few
@@ -529,7 +530,7 @@ const relationships: Relationship[] = [
     type: "hidden-truth",
     label: "The maid who's secretly a consort",
     summary:
-      "Loulan slips out of her role as Pure Consort in disguise to chat and hunt bugs with Maomao as \"someone like a friend\" — a real bond Maomao can no longer be sure of once she learns who Loulan actually is and what she's done.",
+      'Loulan slips out of her role as Pure Consort in disguise to chat and hunt bugs with Maomao as "someone like a friend" — a real bond Maomao can no longer be sure of once she learns who Loulan actually is and what she\'s done.',
     seasons: [
       { trust: 10, affection: 15, power: 20, tension: 10 },
       { trust: 35, affection: 55, power: 45, tension: 70 },

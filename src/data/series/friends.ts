@@ -1,4 +1,5 @@
-import type { Character, Relationship, Series } from "../../types";
+import type { Character } from "@/components/Character/types";
+import type { Relationship, Series } from "../../types";
 
 // Scaffolded by scripts/generate-series.mjs (real TMDb roster — TMDb had no
 // per-season overviews for this show, so synopses were hand-written instead),

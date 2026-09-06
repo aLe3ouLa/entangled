@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { CharacterAvatar } from "../../components/CharacterAvatar";
+import { CharacterAvatar } from "../../components/Character/CharacterAvatar";
 import { Legend } from "./components/Legend";
 import { ZoomControls } from "../../components/ZoomControls";
 import {

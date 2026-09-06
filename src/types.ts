@@ -1,19 +1,4 @@
-export interface Character {
-  id: string;
-  name: string;
-  house: string;
-  color: string;
-  /** one or two sentences on who they are, for a reader who doesn't know the show */
-  bio: string;
-  /** last season the character is alive/active; seasonCount if they survive throughout */
-  aliveUntil: number;
-  /** first season the character appears; defaults to 1 if omitted */
-  firstSeason?: number;
-  /** how much the story is "about" them that season (screen time + being talked about), one per season, 0-100 */
-  prominence: number[];
-  /** override if this character's in-show name differs from how TMDb credits them */
-  tmdbCharacterName?: string;
-}
+import type { Character } from "./components/Character/types";
 
 export interface RelationshipFrame {
   trust: number; // 0-100
@@ -23,17 +8,16 @@ export interface RelationshipFrame {
 }
 
 export type RelationshipType =
-  | 'family'
-  | 'erotic'
-  | 'conflict'
-  | 'dependence'
-  | 'betrayal'
-  | 'responsibility'
-  | 'loyalty'
-  | 'threat'
-  | 'hidden-truth'
-  /** no personal charge yet either way — professional, hierarchical, or purely circumstantial */
-  | 'neutral';
+  | "family"
+  | "erotic"
+  | "conflict"
+  | "dependence"
+  | "betrayal"
+  | "responsibility"
+  | "loyalty"
+  | "threat"
+  | "hidden-truth"
+  | "neutral";
 
 export interface Relationship {
   id: string;
@@ -66,12 +50,12 @@ export interface FamilyPerson {
 }
 
 export type FamilyLinkKind =
-  | 'parent'
-  | 'adoptive'
+  | "parent"
+  | "adoptive"
   /** true parentage the story treats as a secret/reveal — rendered dashed */
-  | 'secret-parent'
+  | "secret-parent"
   /** known extended-family tie that isn't direct parentage (uncle, sibling, etc.) */
-  | 'extended';
+  | "extended";
 
 export interface FamilyLink {
   from: string;
@@ -97,7 +81,7 @@ export interface Series {
   /** search query to resolve this show with whichever art source is active — not a hardcoded numeric id, so adding a series never requires looking one up */
   searchTitle: string;
   /** 'anilist' for animation (real character art, not the voice actor's face); defaults to TMDb cast photos otherwise */
-  characterArtSource?: 'tmdb' | 'anilist';
+  characterArtSource?: "tmdb" | "anilist";
   seasonCount: number;
   /** one short recap per season, index 0 = season 1 — shown in a box that updates as the scrubber moves */
   seasonSynopses: string[];

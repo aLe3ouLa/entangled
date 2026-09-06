@@ -1,5 +1,5 @@
-import { CharacterAvatar } from "./CharacterAvatar";
-import type { Character } from "../types";
+import { CharacterAvatar } from "../Character/CharacterAvatar";
+import type { Character } from "./types";
 
 interface Props {
   character: Character;
